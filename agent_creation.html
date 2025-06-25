@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Creation - Sify InfiniSight</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="sify-theme.css">
+    <link rel="stylesheet" href="sify-banner.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--sify-background-light);
+        }
+        .card {
+            background-color: var(--sify-card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .tab-button.active {
+            color: var(--sify-primary);
+            border-bottom-color: var(--sify-primary);
+            font-weight: 600;
+        }
+        .form-input, .form-select, .form-textarea {
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            padding: 8px 12px;
+            width: 100%;
+            transition: border-color 0.2s ease;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--sify-primary);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--sify-primary);
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- Sify InfiniSight Banner -->
+        <div class="sify-banner">
+            <div class="sify-banner-logo">
+		<span class="one">One</span><span class="sify">Sify</span>
+                <span class="infinisight">InfiniSight</span>
+            </div>
+            <div class="sify-banner-tagline">
+                Autonomous Insight, Always On
+            </div>
+        </div>
+
+        <div class="flex-1 flex">
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 sify-sidebar py-6 flex-shrink-0">
+                <nav class="px-4">
+                    <div class="space-y-1">
+                        <a href="operations_dashboard.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tachometer-alt w-5"></i>
+                            <span>Operations Dashboard</span>
+                        </a>
+                        <a href="agent_studio.html" class="nav-item active flex items-center space-x-3">
+                            <i class="fas fa-robot w-5"></i>
+                            <span>Agent Studio</span>
+                        </a>
+                        <a href="workflow_builder.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-project-diagram w-5"></i>
+                            <span>Workflow Builder</span>
+                        </a>
+                        <a href="tool_management.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tools w-5"></i>
+                            <span>Tool Management</span>
+                        </a>
+                        <a href="reporting_and_analytics.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-chart-line w-5"></i>
+                            <span>Reports & Analytics</span>
+                        </a>
+                        <a href="collaboration_interface.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-comments w-5"></i>
+                            <span>Collaboration</span>
+                        </a>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto sify-content p-6">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Breadcrumb -->
+                    <div class="sify-breadcrumb mb-4">
+                        <a href="operations_dashboard.html">Home</a>
+                        <span class="separator">/</span>
+                        <a href="agent_studio.html">Agent Studio</a>
+                        <span class="separator">/</span>
+                        <span>Create New Agent</span>
+                    </div>
+
+                    <!-- Page Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Create New Agent</h2>
+                            <p class="text-gray-500">Configure and deploy a new autonomous agent</p>
+                        </div>
+                        <div>
+                            <button class="sify-button-secondary px-4 py-2 rounded-lg mr-2">Cancel</button>
+                            <button class="sify-button-primary px-4 py-2 rounded-lg">Save & Deploy</button>
+                        </div>
+                    </div>
+
+                    <!-- Agent Creation Form -->
+                    <div class="card p-6">
+                        <div class="border-b border-gray-200">
+                            <nav class="-mb-px flex space-x-6" id="agent-tabs">
+                                <button class="tab-button active" data-tab="basic">1. Basic Information</button>
+                                <button class="tab-button" data-tab="tools">2. Tools & Capabilities</button>
+                                <button class="tab-button" data-tab="mcp">3. MCP & A2A</button>
+                                <button class="tab-button" data-tab="explainability">4. Explainability</button>
+                                <button class="tab-button" data-tab="review">5. Review & Deploy</button>
+                            </nav>
+                        </div>
+
+                        <div class="mt-6">
+                            <!-- Tab Content: Basic Information -->
+                            <div id="tab-basic" class="tab-content">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="agent-name" class="block text-sm font-medium text-gray-700 mb-1">Agent Name</label>
+                                        <input type="text" id="agent-name" class="form-input" placeholder="e.g., VM Provisioning Agent">
+                                    </div>
+                                    <div>
+                                        <label for="agent-team" class="block text-sm font-medium text-gray-700 mb-1">Assign to Team</label>
+                                        <select id="agent-team" class="form-select">
+                                            <option>Incident Response Team</option>
+                                            <option>Cost Optimization Team</option>
+                                            <option>Security & Compliance Team</option>
+                                            <option>Automated Provisioning Team</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mt-6">
+                                    <label for="agent-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                    <textarea id="agent-description" class="form-textarea" rows="3" placeholder="Describe the agent's primary function..."></textarea>
+                                </div>
+                                <div class="mt-6">
+                                    <label for="agent-avatar" class="block text-sm font-medium text-gray-700 mb-1">Avatar</label>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="h-16 w-16 bg-gray-200 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-robot text-3xl text-gray-400"></i>
+                                        </div>
+                                        <button class="sify-button-secondary px-3 py-1 rounded-lg">Upload Avatar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Content: Tools & Capabilities -->
+                            <div id="tab-tools" class="tab-content hidden">
+                                <h3 class="text-lg font-medium mb-4">Tool Selection</h3>
+                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                    <!-- Tool Card -->
+                                    <div class="border p-3 rounded-lg flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/servicenow_logo_icon_170082.png" class="h-8 w-8 mr-3">
+                                            <span class="font-medium">ServiceNow</span>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <!-- Tool Card -->
+                                    <div class="border p-3 rounded-lg flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img src="https://cdn.worldvectorlogo.com/logos/zabbix.svg" class="h-8 w-8 mr-3">
+                                            <span class="font-medium">Zabbix</span>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <!-- Tool Card -->
+                                    <div class="border p-3 rounded-lg flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img src="https://www.vectorlogo.zone/logos/terraformio/terraformio-icon.svg" class="h-8 w-8 mr-3">
+                                            <span class="font-medium">Terraform</span>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <!-- Add more tool cards -->
+                                </div>
+                                <div class="mt-6">
+                                    <h3 class="text-lg font-medium mb-2">Invocation Method</h3>
+                                    <div class="flex items-center space-x-6">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="invocation" class="form-radio" checked>
+                                            <span class="ml-2">MCP (Recommended)</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="invocation" class="form-radio">
+                                            <span class="ml-2">Direct API Call</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Content: MCP & A2A -->
+                            <div id="tab-mcp" class="tab-content hidden">
+                                <h3 class="text-lg font-medium mb-4">Model Context Protocol (MCP)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="context-window" class="block text-sm font-medium text-gray-700 mb-1">Context Window Size</label>
+                                        <input type="number" id="context-window" class="form-input" value="8192">
+                                    </div>
+                                    <div>
+                                        <label for="memory-retention" class="block text-sm font-medium text-gray-700 mb-1">Memory Retention</label>
+                                        <select id="memory-retention" class="form-select">
+                                            <option>Short-term (Session)</option>
+                                            <option>Long-term (Persistent)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mt-6">
+                                    <h3 class="text-lg font-medium mb-4">Agent-to-Agent (A2A) Communication</h3>
+                                    <div class="flex items-center justify-between">
+                                        <p>Enable A2A communication for this agent</p>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Content: Explainability -->
+                            <div id="tab-explainability" class="tab-content hidden">
+                                <h3 class="text-lg font-medium mb-4">Explainability Settings</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <p>Log agent reasoning</p>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <p>Track context sources</p>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <p>Record A2A communication logs</p>
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Content: Review & Deploy -->
+                            <div id="tab-review" class="tab-content hidden">
+                                <h3 class="text-lg font-medium mb-4">Review Configuration</h3>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <p><strong>Name:</strong> VM Provisioning Agent</p>
+                                    <p><strong>Team:</strong> Automated Provisioning Team</p>
+                                    <p><strong>Tools:</strong> ServiceNow, Terraform</p>
+                                    <p><strong>MCP:</strong> Enabled (8192 context window)</p>
+                                    <p><strong>A2A:</strong> Enabled</p>
+                                </div>
+                                <div class="mt-6 text-center">
+                                    <button class="sify-button-primary px-6 py-3 rounded-lg text-lg">Deploy Agent</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('agent-tabs').addEventListener('click', function (e) {
+            if (e.target.classList.contains('tab-button')) {
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                document.getElementById('tab-' + e.target.dataset.tab).classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

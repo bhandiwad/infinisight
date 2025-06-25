@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaboration Interface - Sify InfiniSight</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="sify-theme.css">
+    <link rel="stylesheet" href="sify-banner.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--sify-background-light);
+        }
+        .chat-container {
+            height: calc(100vh - 300px);
+            min-height: 400px;
+        }
+        .message {
+            max-width: 80%;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 18px;
+        }
+        .user-message {
+            background-color: #E5E7EB;
+            margin-left: auto;
+            border-top-right-radius: 4px;
+        }
+        .agent-message {
+            background-color: #DBEAFE;
+            margin-right: auto;
+            border-top-left-radius: 4px;
+        }
+        .system-message {
+            background-color: #FEF3C7;
+            margin: 0 auto;
+            font-size: 0.85rem;
+            padding: 5px 10px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 90%;
+        }
+        .reasoning-panel {
+            background-color: #F8FAFC;
+            border-left: 3px solid #3B82F6;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: #64748B;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- InfiniSight Banner -->
+        <div class="sify-banner">
+            <div class="sify-banner-logo">
+                <span class="one">One</span><span class="sify">Sify</span>
+                <span class="infinisight">InfiniSight</span>
+            </div>
+            <div class="sify-banner-tagline">
+                Autonomous Insight, Always On
+            </div>
+        </div>
+        
+        <!-- Top Navigation -->
+        <header class="sify-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <div class="sify-logo">
+                    <span class="one">One</span><span class="sify">Sify</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full ml-4">InfiniSight</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="font-medium">Admin User</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex">
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 sify-sidebar py-6 flex-shrink-0">
+                <nav class="px-4">
+                    <div class="space-y-1">
+                        <a href="operations_dashboard.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tachometer-alt w-5"></i>
+                            <span>Operations Dashboard</span>
+                        </a>
+                        <a href="agent_studio.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-robot w-5"></i>
+                            <span>Agent Studio</span>
+                        </a>
+                        <a href="workflow_builder.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-project-diagram w-5"></i>
+                            <span>Workflow Builder</span>
+                        </a>
+                        <a href="tool_management.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tools w-5"></i>
+                            <span>Tool Management</span>
+                        </a>
+                        <a href="reporting_and_analytics.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-chart-line w-5"></i>
+                            <span>Reports & Analytics</span>
+                        </a>
+                        <a href="collaboration_interface.html" class="nav-item active flex items-center space-x-3">
+                            <i class="fas fa-comments w-5"></i>
+                            <span>Collaboration</span>
+                        </a>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto sify-content p-6">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Breadcrumb -->
+                    <div class="sify-breadcrumb mb-4">
+                        <a href="operations_dashboard.html">Home</a>
+                        <span class="separator">/</span>
+                        <span>Collaboration Interface</span>
+                    </div>
+                    
+                    <!-- Page Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Collaboration Interface</h2>
+                            <p class="text-sm text-gray-500">Interact with agents and view their reasoning</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="btn-secondary">
+                                <i class="fas fa-history mr-2"></i>
+                                View History
+                            </button>
+                            <button class="btn-primary">
+                                <i class="fas fa-plus mr-2"></i>
+                                New Conversation
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        <!-- Conversations List -->
+                        <div class="lg:col-span-1">
+                            <div class="bg-white rounded-lg shadow-sm p-4">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="font-medium">Conversations</h3>
+                                    <button class="text-blue-600 hover:text-blue-800 text-sm">
+                                        <i class="fas fa-plus"></i> New
+                                    </button>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <div class="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                                        <div class="font-medium">AWS EC2 Incident #4872</div>
+                                        <div class="text-xs text-gray-500 mt-1">Today, 10:42 AM</div>
+                                    </div>
+                                    
+                                    <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                        <div class="font-medium">Cost Optimization Review</div>
+                                        <div class="text-xs text-gray-500 mt-1">Yesterday, 3:15 PM</div>
+                                    </div>
+                                    
+                                    <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                        <div class="font-medium">Security Alert Investigation</div>
+                                        <div class="text-xs text-gray-500 mt-1">Jun 22, 2025</div>
+                                    </div>
+                                    
+                                    <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                        <div class="font-medium">Network Performance Issue</div>
+                                        <div class="text-xs text-gray-500 mt-1">Jun 20, 2025</div>
+                                    </div>
+                                    
+                                    <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                        <div class="font-medium">Database Scaling Plan</div>
+                                        <div class="text-xs text-gray-500 mt-1">Jun 18, 2025</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-lg shadow-sm p-4 mt-4">
+                                <h3 class="font-medium mb-3">Active Agents</h3>
+                                
+                                <div class="space-y-2">
+                                    <div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                        <div class="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-robot text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Incident Response Agent</div>
+                                            <div class="text-xs text-gray-500">Working on #4872</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                        <div class="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-robot text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Cost Optimizer Agent</div>
+                                            <div class="text-xs text-gray-500">Idle</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                        <div class="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-robot text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Security Agent</div>
+                                            <div class="text-xs text-gray-500">Monitoring</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chat Interface -->
+                        <div class="lg:col-span-3">
+                            <div class="bg-white rounded-lg shadow-sm p-4">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-robot text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">AWS EC2 Incident #4872</div>
+                                            <div class="text-xs text-gray-500">with Incident Response Agent</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <button class="text-gray-500 hover:text-gray-700 p-2">
+                                            <i class="fas fa-user-plus"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-gray-700 p-2">
+                                            <i class="fas fa-cog"></i>
+                                        </button>
+                                        <div class="relative">
+                                            <button class="flex items-center space-x-1 text-blue-600 hover:text-blue-800 text-sm">
+                                                <i class="fas fa-brain"></i>
+                                                <span>Show Reasoning</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Chat Messages -->
+                                <div class="chat-container overflow-y-auto border rounded-lg p-4 mb-4">
+                                    <div class="system-message mb-4">
+                                        Conversation started at 10:42 AM
+                                    </div>
+                                    
+                                    <div class="agent-message message">
+                                        <div class="flex items-center mb-1">
+                                            <span class="font-medium text-sm">Incident Response Agent</span>
+                                            <span class="text-xs text-gray-500 ml-2">10:42 AM</span>
+                                        </div>
+                                        <div>
+                                            I've detected a high CPU utilization alert for EC2 instance i-08a7f3b2c1d4e5f6g in the us-east-1 region. The instance has been running at 95%+ CPU for the last 15 minutes. Would you like me to investigate?
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="user-message message">
+                                        <div class="flex items-center justify-end mb-1">
+                                            <span class="text-xs text-gray-500 mr-2">10:43 AM</span>
+                                            <span class="font-medium text-sm">You</span>
+                                        </div>
+                                        <div>
+                                            Yes, please investigate and let me know what you find.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="system-message my-3">
+                                        Agent is investigating the incident...
+                                    </div>
+                                    
+                                    <div class="agent-message message">
+                                        <div class="flex items-center mb-1">
+                                            <span class="font-medium text-sm">Incident Response Agent</span>
+                                            <span class="text-xs text-gray-500 ml-2">10:45 AM</span>
+                                        </div>
+                                        <div>
+                                            I've analyzed the instance and found that it's running a batch processing job that started at 10:30 AM. This job is consuming excessive CPU resources. The instance is a t3.medium which has limited CPU credits, and it's currently running at burst capacity.
+                                        </div>
+                                        <div class="reasoning-panel mt-2">
+                                            <div class="font-medium text-xs mb-1">Agent Reasoning:</div>
+                                            <div>
+                                                1. Checked CloudWatch metrics for i-08a7f3b2c1d4e5f6g<br>
+                                                2. Analyzed CPU utilization pattern (95-98% sustained)<br>
+                                                3. Examined running processes via SSM<br>
+                                                4. Identified batch job "data-processing-daily" as the cause<br>
+                                                5. Checked instance type and determined it's undersized for the workload
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="user-message message">
+                                        <div class="flex items-center justify-end mb-1">
+                                            <span class="text-xs text-gray-500 mr-2">10:46 AM</span>
+                                            <span class="font-medium text-sm">You</span>
+                                        </div>
+                                        <div>
+                                            What do you recommend we do to resolve this?
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="agent-message message">
+                                        <div class="flex items-center mb-1">
+                                            <span class="font-medium text-sm">Incident Response Agent</span>
+                                            <span class="text-xs text-gray-500 ml-2">10:47 AM</span>
+                                        </div>
+                                        <div>
+                                            I recommend the following actions:
+                                            <ol class="list-decimal pl-5 mt-2">
+                                                <li>Resize the instance to a c5.large which is optimized for compute-intensive workloads</li>
+                                                <li>Schedule the batch job during off-peak hours (2:00 AM - 5:00 AM)</li>
+                                                <li>Set up auto-scaling for this workload based on CPU utilization</li>
+                                            </ol>
+                                            Would you like me to implement any of these recommendations?
+                                        </div>
+                                        <div class="reasoning-panel mt-2">
+                                            <div class="font-medium text-xs mb-1">Agent Reasoning:</div>
+                                            <div>
+                                                1. Analyzed workload characteristics (CPU-bound, batch processing)<br>
+                                                2. Compared instance types and pricing<br>
+                                                3. Calculated that c5.large offers 2x performance for this workload at 1.3x cost<br>
+                                                4. Checked usage patterns and identified 2:00-5:00 AM as lowest usage period<br>
+                                                5. Reviewed auto-scaling policies for similar workloads in the account
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="user-message message">
+                                        <div class="flex items-center justify-end mb-1">
+                                            <span class="text-xs text-gray-500 mr-2">10:48 AM</span>
+                                            <span class="font-medium text-sm">You</span>
+                                        </div>
+                                        <div>
+                                            Let's resize the instance to a c5.large. Can you prepare the change and show me what it will look like before implementing?
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="agent-message message">
+                                        <div class="flex items-center mb-1">
+                                            <span class="font-medium text-sm">Incident Response Agent</span>
+                                            <span class="text-xs text-gray-500 ml-2">10:50 AM</span>
+                                        </div>
+                                        <div>
+                                            I've prepared the instance resize operation. Here's what will happen:
+                                            <ul class="list-disc pl-5 mt-2">
+                                                <li>The instance will be stopped (estimated downtime: 3-5 minutes)</li>
+                                                <li>Instance type will change from t3.medium to c5.large</li>
+                                                <li>Monthly cost impact: +$21.90 (from $33.87 to $55.77)</li>
+                                                <li>Performance improvement: +110% CPU capacity</li>
+                                            </ul>
+                                            <div class="mt-2">
+                                                <button class="btn-primary btn-sm">Approve Change</button>
+                                                <button class="btn-secondary btn-sm ml-2">Modify Plan</button>
+                                                <button class="btn-tertiary btn-sm ml-2">Cancel</button>
+                                            </div>
+                                        </div>
+                                        <div class="reasoning-panel mt-2">
+                                            <div class="font-medium text-xs mb-1">Agent Reasoning:</div>
+                                            <div>
+                                                1. Generated AWS CLI command for instance resize<br>
+                                                2. Calculated downtime based on historical instance stop/start times<br>
+                                                3. Retrieved current pricing from AWS Price List API<br>
+                                                4. Calculated performance improvement based on AWS instance specifications<br>
+                                                5. Prepared approval workflow with rollback plan
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Chat Input -->
+                                <div class="flex items-center">
+                                    <div class="flex-1 relative">
+                                        <input type="text" placeholder="Type your message..." class="w-full border border-gray-300 rounded-full px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <button class="absolute right-3 top-2 text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-paperclip"></i>
+                                        </button>
+                                    </div>
+                                    <button class="ml-2 bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-blue-700">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

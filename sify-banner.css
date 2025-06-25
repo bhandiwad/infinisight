@@ -1,0 +1,43 @@
+/* Sify InfiniSight Banner Styles */
+.sify-banner {
+  background: linear-gradient(90deg, #0e3450 0%, #1a5276 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.sify-banner-logo {
+  display: flex;
+  align-items: center;
+}
+
+.sify-banner-logo .infinisight {
+  font-weight: 700;
+  font-size: 1.25rem;
+  background: linear-gradient(90deg, #ffffff 0%, #e0e0e0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: 0.5rem;
+}
+
+.sify-banner-tagline {
+  font-size: 0.875rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .sify-banner {
+    flex-direction: column;
+    padding: 0.75rem;
+  }
+  
+  .sify-banner-tagline {
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+}

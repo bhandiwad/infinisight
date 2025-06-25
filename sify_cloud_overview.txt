@@ -1,0 +1,725 @@
+Sify Overview
+                                                          CLOUD@CORE
+A L I G N E D TO O U R C US TO M E R S ’ C L O U D T R AN S F O R M AT I O N PU R S U I T
+
+
+
+
+  CLOUD ENABLING                             CLOUD INSPIRED                        CLOUD PURE              CLOUD ENHANCED
+  ▪ Cloud DC                                ▪ Sify CloudInfinit                 ▪ AWS                      ▪ Modern Applications
+  ▪ Hyper reach/Hyper scale                       ▪ Enterprise Multi-Tenant     ▪ Azure                    ▪ Kubernetes-as-a-Service
+    transport                                     ▪ Hosted Private
+    DirectConnect | Oracle FastConnect |                                        ▪ Oracle                   ▪ DevOps Value Chain
+    ExpressRoute | | Partner Interconnect         ▪ ITaaS with Remote           ▪ Multi Cloud Management   ▪ Analytics, Data Lakes
+  ▪ Software Defined Network                         Managed                      platform & services      ▪ AI/ML
+    services                                      ▪ Hosted SAP/S4HANA
+  ▪ Cloud build                                                                                            ▪ Forum DIGITAL
+    Private | Hyperconverged | Enterprise         ▪ Azure Stack as a Service                               ▪ HCM Digital( i-Test)
+  ▪ Security services for cloud             ▪ Edge Connect Services                                        ▪ Learning Management
+  ▪ Migration and Implementation            ▪ SD-WAN
+    services                                                                                               ▪ Internet-of-Things (IOT)
+                                            ▪ Collaboration services on Cloud                              ▪ Industry Solution-as-a-Service
+
+
+Confidential
+MULTI CLOUD SERVICES
+SIFY CLOUD TRANSFORMATION SERVICES
+
+                                                                                                               UNIFIED VISIBILITY
+
+
+
+
+                                 SAP , ORACLE, MS AZURE
+                                                                                         INTEGRATED ORCHESTRATION AND MANAGEMENT
+
+
+
+                                     ENTERPRISE
+                                        CLOUD
+                                                                                                  SECURITY AND SERVICE GOVERNANCE
+
+                                                                                           PUBLIC CLOUD            PRIVATE CLOUD         ENTERPRISE CLOUD
+
+
+
+
+                                                                                        • Hyper Scale            • Fully dedicated       • Application Centric
+                                                                                        • Pay per Hour           • Compliance driven       Architecture
+                                                                                        • Globally available     • Flexibility to own,   • Blueprint driven
+    Public and Private Cloud                                On-demand Provisioning &
+    Service providers at 30 +                             Simplified Management – Add                              outsource and buy     • Hybrid cloud ready
+         global locations                                      on to MPLS network
+                                                                                                                   back
+
+                                                                                         SEAMLESSLY INTERCONNECTED – MPLS, INTERNET VPN
+                                                                                           EXPRESSROUTE, DIRECT CONNECT, FAST CONNECT
+
+Confidential
+HYBRID MULTI CLOUD WITH CLOUD ADJACENCY
+
+                                                                                                                                         Business Benefits of
+                                                                                                                                         Sify’s Cloud Investment
+                     Hyperscale Clouds AT VERY LOWLATENCY                                                                                •   Best of breed
+                                                                                                                                             performance with
+RABALE DATA CENTER (Cloud Adjacent)                                                                                                          Hybrid Cloud
+                                                                                                               br
+                                                                                                                                             configuration
+
+
+
+
+                                                                                             DC INTERCONNECT
+                                                                                                                            Express
+                                                                                                                            Route        •   Efficient integrations
+Direct Connect                         Sify Cloud Connect                                                      yb                            with extended
+                                                                                                                                             ecosystems
+                                        Hybrid Multi Cloud
+Colo + Managed Services                                                                                                                  •   Compliance with data
+                                                                                                                          Partner
+                                                                                                                          Interconnect
+                                                                                                                                             sovereignty
+                                                                                                                                         •   Business continuity
+ Direct Connect                                                                                                                              with resilience
+                                                                                                                                         •   Simplicity with self
+      AIROLI DC (Near Cloud / DR) - Enterprise Multi Tenant Cloud AT MINIMAL LATENCY                                                         service
+                                                                                                                    FARDRREADY
+Colo + Managed            Sify CLOUDINFINIT CMP | AIOps Platform for Managed Services                                                    •   Operational efficiency
+Services                  HOSTED PRIVATE CLOUD + APPS AS A SERVICE                                                                           with reduced IT
+                                                                                                                                             administration
+                             CLOUD              SAP          ORACLE         AZURE       NEAR DR
+                             INFINIT            GRID         EXADATA        STACK                                                        •   Cost reduction with
+                                                                                                                     Hyderabad               On-demand bursting
+                                                                                                                     Data Center             to public clouds.
+
+
+
+  Confidential
+VMWARE CLOUD ON AWS: JOINTLY ENGINEERED CLOUD SERVICE
+
+         vRealize Suite, 3 rd party ISV ecosystem
+                                                                                                 –   VMware SDDC running on AWS bare metal
+   vSphere-based              VMware CloudTM on AWS
+    environment                 Powered by VMware Cloud Foundat ion
+                                                                                AWS services
+                                                                                                 –   Delivered, operated, supported by VMware
+     vCenter                              vCenter                                                –   On-demand capacity and flexible
+                                                                                                     consumption
+                                                                        S3     Lambda Redshift
+                            vSphere          vSAN              NSX                               –   Full operational consistency with on-
+                                                                                                     premises
+                                                                       ELB     CodeBuild   KMS
+                                                                                                 –   Seamless, large-scale workload portability
+          Large-scale application migration                                    …                     and hybrid ops
+                                                                                                 –   Global AWS footprint, reach, availability
+Max Bupa Data Center                               AWS Global Infrastructure
+                                                                                                 –   Direct access to native AWS services
+
+
+
+
+  Confidential
+USE CASES : VMC ON AWS
+
+
+                                                       Expand
+        Primary        Secondary            Maintain              Consolidate      Migrate
+
+
+
+
+        Disaster recovery          Data center extension          Cloud migrations           Next-generation apps
+
+                                      Footprint expansion /         Application specific
+                  New DR                                                                      Application modernization
+                                       On-demand capacity          BCA | Virtual Desktops
+
+
+                                   Virtual Desktops / Published
+          Replace existing DR                                        Data center wide         New application build-out
+                                               Apps
+
+
+       Complement existing DR               Test/Dev              Infrastructure refresh         Hybrid applications
+
+
+
+
+Confidential
+CLOUD ADJACENCY ADVANTAGES
+
+
+
+
+Confidential
+SIFY’S DATA CENTER FOOTPRINT (EXISTING & UPCOMING)
+
+                                                                                      Delhi 1
+                                                                                       Noida
+                                                                                      9.6* MW
+
+               Mumbai 1            Mumbai 2            Mumbai 3                                                        Kolkata 1
+                 Vashi               Airoli          Rabale - Tower                                                     1.6 MW
+                0.9 MW              5.4 MW                 1
+                                                        11.5 MW
+
+                                            MUMBAI                                                                  Hyderabad 1
+                                                                                                                      8.8 MW
+
+                     Mumbai 3         Mumbai 4         Mumbai 4                                  BENGALURU
+    Mumbai 3
+                  Rabale - Tower 3 Rabale – Tower 1 Rabale - Tower 2
+ Rabale - Tower 2
+   6.4 – 8.0 MW                                                                 Bangalore 1          Bangalore 2          Bangalore 2
+                     Year 2019        year 2020        year 2021
+                                                                               Electronic City   Devanahalli – Tower1 Devanahalli – Tower2
+                                                                                  1.7* MW
+                                                                                                      Year 2020            Year 2022
+
+                                                                                                   CHENNAI
+
+
+                                                                       Chennai 1        Chennai 2          Chennai 2          Chennai 2
+           Existing              Upcoming            Planning                                          Siruseri – Tower 2 Siruseri – Tower 3
+     * incl. planned expansion                                         Tidel Park   Siruseri – Tower 1
+                                                                        0.6 MW
+   All Power references are Design IT Power at Full Capacity                           year 2019           Year 2021          Year 2022
+
+
+Confidential
+CLOUD CONNECT – NETWORK DESIGNED FOR CLOUD
+
+GlobalCloudConnect - Cloud Connectivity services over a secure, deterministic and reliable private
+connection.
+GlobalCloudConnect enables an enterprise to realize the full potential of their cloud by:
+ • Bespoke Solutions: because no two businesses are alike
+ • Faster Delivery Timelines: so that your network is as agile as the Cloud
+ • Predictable Performance: for you to tame your cloud better
+ • Secure and reliable connections: Keep your Cloud safe
+
+
+GCC offers its connections into the following Cloud Platforms within India:
+
+
+
+
+Leverage strategic partnerships with Service Providers across the globe for other Regions and Clouds
+
+ Confidential
+CLOUD CONNECT – ENTERPRISE GRADE PERFORMANCE
+
+
+
+
+Confidential
+CLOUD CONNECT – BENEFITS
+
+                 10 Public and Private Cloud
+               Service providers at 30+ global
+                          locations
+
+
+
+  A Connectivity that offers               On-demand Provisioning &
+ Premium Performance/ High                 Simplified Management: On
+         Resiliency                           your MPLS network
+
+
+
+        True Bandwidth On-Demand, Pay per use to cloud nodes
+        outside India. Fixed cost networks to cloud workloads in
+                                   India
+
+
+
+
+        SECURE, PERFORMANCE-DETERMINISTIC PRIVATE CONNECTIVITY TO YOUR
+                          WORKLOAD ON THE CLOUD
+
+
+
+
+Confidential
+KEY ELEMENTS OF SIFY’S MULTI CLOUD MANAGEMENT PLATFORM
+
+
+
+
+                                      Service Orchestration                    Service Metering and              Service Desk
+Service Catalog - CI Portal,
+                                    • Infrastructure as code -                 Chargeback                 • ServiceNow
+Oracle CPQ
+• Service Configuration and Quote     Terraform, Ansible, Chef,                • Public Cloud – Various
+                                      Docker, OEM’s API / CLI                                             • Provisioned resources and
+  management with workflows in                                                   Tools                      configurations are updated in
+  Oracle CPQ                        • Blueprints based solutions are
+                                      provisioned consuming                    • Private Cloud – Sify       ServiceNow – CMDB
+• Quota based subscription for                                                   Implementation
+                                      subscribed capacity / quota                                         •    Automated Service Request /
+  Private Clouds is available
+                                                                               • Invoices are raised          Incident Request creation
+                                                                                 through Oracle ERP
+
+
+
+
+ Resource Governance                                    Service Assurance                                        Managed Services
+ • CMDB – Service Now                                   • CA                                                     • Assessment and Migration
+                                                        • Provisioned resources are                              • Life Cycle Management
+                                                          monitored                                              • Resiliency, backup and DR
+
+
+
+Confidential
+MULTI-CLOUD MANAGEMENT PLATFORM ( GENERATION 4)
+
+LIFE CYCLE MANAGEMENT WITH BLUEPRINTS
+
+
+          Composed of cloud resources like VPC, Subnet, Instance &
+          EIP as a single solution
+
+
+
+
+           Customize prebuilt / build from scratch
+
+           Choose cloud resources with simple clicks
+           Refer existing resources to build a solution topology
+           Specify parameters for a specific project
+
+           Reverse Engineer from an existing Deployment (sat Dev)
+           Adapt for higher levels (stating, production, volume testing)
+
+
+
+
+           Provisioned, decommissioned, managed as single unit
+
+
+
+
+ Confidential
+ADDING / MODIFYING / REMOVING CLOUD RESOURCES WITH SIMPLE CLICKS
+
+
+
+
+Confidential
+SIFY ENGINEERED SECURITY SERVICES ( CLOUD/DC)
+
+
+
+ Security Services Stack                          Sify GoInfinit            Security Services Stack                     Public &
+ for Sify DC & Cloud                                  Cloud                 for any cloud                           On-premise Cloud
+                                              VPI | VPE | Private                                                 AWS | Azure | VMware
+
+
+
+
+                                                                                                              Cloud native
+     VPDC FW           Web App          Network                                                               Security services
+     Services          Firewall           IPS         VPN GW
+
+
+
+
+                     Cloud DDOS                                       Cloud CDN      Micro-            Security Asset           Key Mgmt
+                                  PIM              Log Mgmt.   SIEM                              NBA
+Deception      MFA                                                       WAF      segmentation          Management       CASB    Services
+                     Protection
+
+
+
+
+Confidential
+IT OPS SUPPORT MODEL – POWERED BY SERVICE NOW & CA
+
+
+Solution drivers
+
+
+o     Risk mitigated Transition of Services
+o     Process standardization
+
+Solution Highlights
+o     Single point of contact and SLA based
+      Service Ownership across the entire Data
+      Centre Network
+
+
+o     Consistent Service experience through
+      Service Management Office (SMO) to
+      implement and ensure ITIL process and
+      compliance
+
+
+o     Covers range of devices from leading
+      vendors supporting various business
+      needs
+
+
+o     Single point of ownership – End to End
+      SLA
+
+
+o     24x7 Monitoring and Management by
+      specialized technical team
+
+
+
+    Confidential
+    SIFY ADVANTAGE : BUILDING AGILE PLATFORMS
+▪    Service management systems
+     to deliver ITSM compliant
+     service.
+▪    Integration with partners for
+     single point ownership.
+▪    Automation integration                     Aakaash as the
+     between service and networks.              digital interface
+                                                into the network
+▪    Model driven assurance
+
+
+▪    Aggregation of events cross
+     domain.
+▪    Supervised rules and                       ▪ Ability to
+     enrichment                                   integrate with
+▪    Priority based ranking                       LAN, WAN, DC,
+                                                  Network security
+                                                  and SD
+▪    Machine learning based systems               technologies
+     to reduce noise, increase focus            ▪ Multi-vendor
+     and aid in Root cause issues.                support.
+▪    Continuous learning systems                ▪ Customization
+     augmented with human                         to override
+     knowledge and context.                       device
+                                                  telemetry limits
+
+
+
+    Confidential
+SERVICENOW CUSTOMER CXO DASHBOARD
+
+
+
+
+Confidential
+Confidential
+Confidential
+ARCHITECTURE APPROACH FOR CLOUD SERVICES ORCHESTRATION
+
+
+                   ServiceAccess
+                   Service Access
+
+
+
+
+                                                                                 UNIFIED CONTROL PLANE
+                                                                                                         Unified
+                                                                                                          UnifiedControl Plane
+                                                                                                                 Control Plane
+
+
+
+
+                                                Service Monitoring & Assurance
+                  Service  Layer
+                   Service Layer
+
+
+
+
+                                          Service Monitoring &
+                                                Assurance
+               Orchestration   Layer
+               Service Orchestration
+
+
+
+
+                                                                                                                        SIFY CLOUD CONNECT
+                                                                                      HYBRID CLOUD
+                                                                                                              Hybrid Cloud
+                 ProviderProviders
+                Resource   Layer
+
+Confidential
+SERVICE CATALOGUE STREAMS
+
+
+
+
+Confidential
+IN THE ENTERPRISE CLOUD – HIGH LEVEL SERVICE ORCHESTRATION FLOW
+
+
+                                                                                              CLI
+
+                            Micro Services
+
+
+
+                                                                             Infrastructure as Code
+
+
+           API Gateway
+                                                Orchestration
+                                                   Engine
+                             Authentication
+                             Authorization,
+                         Resource Governance,
+                            Transformation,
+                           ServiceNow CMDB                                       REST / SOAP API
+
+                                                                API Engine
+
+
+Confidential
+CI ORCHESTRATION - ACI NETWORK
+                                                Internet                                                MPLS
+
+                                                                                                   Edge Routers /
+                                                                                                   vRouters             Customer
+                                                                                                                          office
+                                                                                                   Core Switches /
+                                                                                                   vSwitches
+
+                                                VDOM –         Fortinet Firewalls
+                                              Policies, NAT,                                       Cisco NFV Platform
+                                                   VPN                                             VNF Firewall, WAF
+
+                            VNF FW / WAF / LB
+                                 Creation
+                                                                                                            LB
+                                        LB Configurations                                           Shared / Dedicated
+                                                                                                   (On top of Cisco NFV)
+
+                             Tenant, Application
+                                 Profile, VRF.                                      Spine
+                              For LAN – BD, EPG
+  dvPort Group                                                                              Leaf        ACI Fabric
+ Assignment Only
+
+
+                            dvPort Group
+          VMWare vCenter   Creation by APIC
+                                                                                                          VMWare
+                                                                                                   ESXi Hypervisor Clusters
+
+
+
+
+Confidential
+               MULTICLOUD ORCHESTRATION
+
+
+
+
+Confidential
+SIFY - A COMPLETE CLOUD PARTNER ENABLING DIGITAL SERVICES
+
+                                                                    HYBRID
+                                                                    CLOUD
+
+
+
+
+                                 CLOUD
+                                STRATEGY                                                         MANAGED
+                                                                                             SECURITY SERVICES
+                                                                  AI / ML
+                                                             based Automation
+
+
+
+
+                     CLOUD
+                   EVOLUTION        CLOUD & DATA CENTER                         EDGE              DIGITAL
+                  & MIGRATION    MANAGEMENT & OPTIMIZATION                      CLOUD           WORKPLACE &
+                                                                                NETWORKING     COLLABORATION
+
+
+                  INTELLIGENT                       INDUSTRY-LED                                INVISIBLE
+
+cloud@core
+  Confidential
+             TM
+SIFY - HYPERSCALER PARTNERSHIPS
+
+              AWS Partner Network member and                            One of the key AWS Direct Connect Provider in
+              recognised as                                               PAN India, Sify has a unique advantage of          Only partner in India who can offer low
+                 1. Advanced Tier Consulting Partner                     having the Direct-Connect as well as its own     latency, with cloud adjacent DC to AWS cloud
+                 2. Channel Reseller                                        Metro Ethernet connect that provides                       from Sify Rabale DC
+                 3. Direct Connect Partner                                      connectivity speed up to 10G+
+
+
+
+              Oracle Partner Network member for                         One of the key Oracle Fast connect Provider in    Only Partner in India who can offer Cloud adjacent
+                 1. Cloud service track                                     PAN India, Sify has a unique advantage of    datacenter to Oracle cloud by virtue of Oracle cloud
+                 2. Cloud sell track                                     having the Fast-connect nodes terminating in      being hosted in Sify’s Rabale and Hyderabad DC
+                 3. License and hardware track                          its Rabale and Hyderabad DC there by reducing    Only Partner in APAC who can provide “Exadata as a
+                                                                                     interconnectivity cost                                     service”
+
+
+                  Microsoft Gold Partner (App Development &
+                  Integration, Cloud Platform, Collaboration and         One of the key Express Route Provider in PAN       Only partner who has Infrastructure and
+                  Content)                                                                                               capability around Private (Hosted Azure Stack
+                                                                         India and Hosting Govt. Community Cloud on
+                  Microsoft LSP (Licensing Solution Provider), Tier 1                                                    in Sify DC), Public and Hybrid Cloud on Azure
+                  Direct CSP, SPLA Reseller and Managed Reseller               Azure Stack for Maharashtra Govt
+
+
+                          GCP Premier Cloud Partner                            GCP Cloud Interconnect Partner             Partner in India who can offer Cloud adjacent
+                    Partner gains access to additional tools:           Sify provide secure and high performance GCP     datacenter to GCP cloud by virtue of GCP cloud
+                     Partner Sales Tool, Directory, Google                          cloud network services                            POD at Noida, Mumbai
+                         University, Reseller Consoles
+
+
+cloud@core
+  Confidential
+             TM
+SIFY CMP: FINOPS CUSTOMER BENEFITS
+
+       Enable digital transformation                                               Provide near real-time
+         with cost and performance                                             observability and visibility in
+          controls. Faster time to          Savings ranging from 25 to           (unexpected) cloud costs,
+        decisions and remediations          75% of total cloud spend.          wastes, and future trends for
+      saving operational costs (OPEX)                                           faster containment of cost
+        and improving profitability.                                                      sprawls.
+
+
+
+
+                                                            Automate budget controls and
+                          Allow self-service amongst           policy implementations in
+                         FinOps practitioners who now           federated organization
+                         can manage at least 10x more       structures, driving compliance
+                               cloud footprints.                 and company policy
+                                                                       adherence.
+
+                                                                                                   More…
+
+                                                                                                           More…
+
+cloud@core
+  Confidential
+             TM
+REAL-TIME OBSERVABILITY SHOWING SPENDING
+
+ Customer scenario: Cloud enterprise wants to understand their cloud consumption across different categories such as
+ instances, storage, networking, containers, scaling groups, and services. In addition they want to understand how much
+ cloud waste there is in each category. They used to use scripts and manual methods to figure these out, and each time it
+ would take them months.
+
+                                                                      With Sify Multi-CMP FinOps
+                                                                        ●   Large amount of pricing and utilization data
+                                                                            are analyzed in real time showing cloud
+                                                                            consumptions in instances, storage,
+                                                                            networking, containers, scaling groups, and
+                                                                            services.
+                                                                        ●   Cloud waste in each category is also shown.
+                                                                        ●   Users can also find cost trends and
+                                                                            utilization trends for each resource in the
+                                                                            drill-down.
+
+
+                                                                                                         Back…
+
+                                                                                                                  Back…
+                                                                                                                           29
+Digital@Core
+  Confidential
+CHARGEBACK AND BUDGETING
+
+ Customer scenario: Government entity, which has many organizational sub-units, needs self-service reports for sub-unit
+ level consumption for chargeback and budgeting analysis. They use multiple clouds, in particular AWS, MS Azure,
+ Kubernetes, etc.
+
+                                                                     With Sify Multi-CMP FinOps
+
+                                                                       ●   Administrator can easily group cloud resources
+                                                                           (including Kubernetes constructs and cloud services)
+                                                                           from multiple clouds using FinOps Financial
+                                                                           Domain.
+                                                                       ●   Each financial domain represents one organizational
+                                                                           sub-unit, with chargeback/showback and budgeting
+                                                                           capabilities. Shared cost allocation enabled.
+                                                                       ●   Forecast of future consumptions.
+                                                                       ●   Real-time budget alerts sent via emails or ticketing
+                                                                           systems such as ServiceNow and PagerDuty.
+                                                                       ●   Role-based control access allowing for organizational
+                                                                           unit stakeholder(s) to self-service on FinOps to
+                                                                           understand their consumptions and pay their share
+                                                                           of cloud costs.
+
+                                                                                                             Back…
+
+                                                                                                                       Back…
+                                                                                                                              30
+Digital@Core
+  Confidential
+RIGHTSIZING CLOUD RESOURCES
+
+ Customer scenario: After lift-and-shift from on-prem to the cloud, many cloud resources are over-provisioned. Cloud
+ enterprises need full knowledge of utilization trends and recommendations to make the right decision.
+
+
+                                                                           With Sify Multi-CMP FinOps
+                                                                              ●   Each instance has a few
+                                                                                  recommendations with risk level
+                                                                                  specified for rightsizing.
+                                                                              ●   Users can make the determination
+                                                                                  by looking at the resource
+                                                                                  utilization trends over a chosen
+                                                                                  time period.
+                                                                              ●   Rightsizing also applies to other
+                                                                                  cloud resources such as storage,
+                                                                                  containers, and more.
+
+
+                                                                                                        Back…
+
+                                                                                                                 Back…
+                                                                                                                       31
+Digital@Core
+  Confidential
+SAVE CLOUD COSTS ON NON-PRODUCTION
+ENVIRONMENTS
+ Customer scenario: The DevOps team leaves their non-production cloud instances on 24/7. Research shows that these
+ instances are sitting idle about 76% of time on average. The company needs an automated way to start up and shut down
+ the instances at proper times.
+
+                                                        With Sify Multi-CMP FinOps
+                                                          ●    Our ML-based algorithms study the usage pattern of
+                                                               each of the instances and make recommendations
+                                                               for smart startup and shutdown schedules.
+                                                          ●    These startup and shutdown schedules can be
+                                                               applied on individual instances or a group of
+                                                               inter-related instances (Service Domains)
+                                                          ●    These schedules, once applied, automatically
+                                                               executes accordingly.
+
+
+
+
+                                                                                                       Home…
+
+                                                                                                               Home…
+                                                                                                                    32
+Digital@Core
+  Confidential
+SINGLE SIGN ON FOR CMP, FINOPS & ITSM
+
+
+
+
+                                        Back…
+
+                                                Back…
+
+cloud@core
+  Confidential
+             TM
+

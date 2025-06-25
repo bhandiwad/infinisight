@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Management - Sify InfiniSight</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="sify-theme.css">
+    <link rel="stylesheet" href="sify-banner.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--sify-background-light);
+        }
+        .card {
+            background-color: var(--sify-card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .tool-card {
+            transition: all 0.2s ease;
+        }
+        .tool-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .status-active {
+            background-color: #10B981;
+        }
+        .status-inactive {
+            background-color: #9CA3AF;
+        }
+        .status-error {
+            background-color: #EF4444;
+        }
+        .mcp-indicator {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 9999px;
+            background-color: #DBEAFE;
+            color: #1E40AF;
+            display: inline-flex;
+            align-items: center;
+        }
+        .direct-indicator {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 9999px;
+            background-color: #FEF3C7;
+            color: #92400E;
+            display: inline-flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- InfiniSight Banner -->
+        <div class="sify-banner">
+            <div class="sify-banner-logo">
+                <span class="one">One</span><span class="sify">Sify</span>
+                <span class="infinisight">InfiniSight</span>
+            </div>
+            <div class="sify-banner-tagline">
+                Autonomous Insight, Always On
+            </div>
+        </div>
+        
+        <!-- Top Navigation -->
+        <header class="sify-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <div class="sify-logo">
+                    <span class="one">One</span><span class="sify">Sify</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full ml-4">InfiniSight</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="font-medium">Admin User</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex">
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 sify-sidebar py-6 flex-shrink-0">
+                <nav class="px-4">
+                    <div class="space-y-1">
+                        <a href="operations_dashboard.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tachometer-alt w-5"></i>
+                            <span>Operations Dashboard</span>
+                        </a>
+                        <a href="agent_studio.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-robot w-5"></i>
+                            <span>Agent Studio</span>
+                        </a>
+                        <a href="workflow_builder.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-project-diagram w-5"></i>
+                            <span>Workflow Builder</span>
+                        </a>
+                        <a href="tool_management.html" class="nav-item active flex items-center space-x-3">
+                            <i class="fas fa-tools w-5"></i>
+                            <span>Tool Management</span>
+                        </a>
+                        <a href="reporting_and_analytics.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-chart-line w-5"></i>
+                            <span>Reports & Analytics</span>
+                        </a>
+                        <a href="collaboration_interface.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-comments w-5"></i>
+                            <span>Collaboration</span>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            Environment
+                        </h3>
+                        <div class="mt-2 space-y-1">
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fab fa-aws w-5"></i>
+                                <span>AWS</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fab fa-microsoft w-5"></i>
+                                <span>Azure</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fab fa-google w-5"></i>
+                                <span>GCP</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-cloud w-5"></i>
+                                <span>Sify CI</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            Settings
+                        </h3>
+                        <div class="mt-2 space-y-1">
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-cog w-5"></i>
+                                <span>Platform Settings</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-user-cog w-5"></i>
+                                <span>User Preferences</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-key w-5"></i>
+                                <span>API Keys</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto sify-content p-6">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Breadcrumb -->
+                    <div class="sify-breadcrumb mb-4">
+                        <a href="#">Home</a>
+                        <span class="separator">/</span>
+                        <span>Tool Management</span>
+                    </div>
+                    
+                    <!-- Page Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Tool Management</h2>
+                            <p class="text-sm text-gray-500">Configure and manage tools for agent use</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="btn-primary">
+                                <i class="fas fa-plus mr-2"></i>
+                                Add New Tool
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tool Categories Tabs -->
+                    <div class="mb-6">
+                        <div class="border-b border-gray-200">
+                            <nav class="-mb-px flex space-x-8">
+                                <a href="#" class="border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                                    All Tools
+                                </a>
+                                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                                    Monitoring
+                                </a>
+                                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                                    ITSM
+                                </a>
+                                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                                    Cloud Providers
+                                </a>
+                                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                                    IaC
+                                </a>
+                                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                                    Security
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- Tool Filters -->
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                        <div class="relative">
+                            <input type="text" placeholder="Search tools..." class="pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        
+                        <div class="flex-1"></div>
+                        
+                        <div>
+                            <select class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option>All Categories</option>
+                                <option>Monitoring</option>
+                                <option>ITSM</option>
+                                <option>Cloud Providers</option>
+                                <option>IaC</option>
+                                <option>Security</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <select class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option>All Statuses</option>
+                                <option>Active</option>
+                                <option>Inactive</option>
+                                <option>Error</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <select class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option>All Integration Types</option>
+                                <option>API</option>
+                                <option>SDK</option>
+                                <option>CLI</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tool List -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Tool 1: Zabbix -->
+                        <div class="card tool-card p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-start space-x-3">
+                                    <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-chart-line text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Zabbix</h4>
+                                        <div class="flex items-center mt-1">
+                                            <span class="status-indicator status-active"></span>
+                                            <span class="text-xs text-gray-500">Active</span>
+                                            <span class="mx-2 text-gray-300">|</span>
+                                            <span class="text-xs text-gray-500">Monitoring</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <button class="text-sm text-gray-600 hover:text-gray-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-gray-600 mb-3">Enterprise-class open source distributed monitoring solution for networks and applications.</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">API</span>
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">SDK</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="mcp-indicator text-xs">
+                                        <i class="fas fa-brain mr-1"></i> MCP
+                                    </span>
+                                    <span class="direct-indicator text-xs">
+                                        <i class="fas fa-bolt mr-1"></i> Direct
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">Configure</button>
+                                    <button class="text-xs text-gray-600 hover:text-gray-800">Disable</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tool 2: ServiceNow -->
+                        <div class="card tool-card p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-start space-x-3">
+                                    <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-ticket-alt text-green-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">ServiceNow</h4>
+                                        <div class="flex items-center mt-1">
+                                            <span class="status-indicator status-active"></span>
+                                            <span class="text-xs text-gray-500">Active</span>
+                                            <span class="mx-2 text-gray-300">|</span>
+                                            <span class="text-xs text-gray-500">ITSM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <button class="text-sm text-gray-600 hover:text-gray-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-gray-600 mb-3">Cloud-based IT service management platform for incident, problem, and change management.</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">API</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="mcp-indicator text-xs">
+                                        <i class="fas fa-brain mr-1"></i> MCP
+                                    </span>
+                                    <span class="direct-indicator text-xs">
+                                        <i class="fas fa-bolt mr-1"></i> Direct
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">Configure</button>
+                                    <button class="text-xs text-gray-600 hover:text-gray-800">Disable</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tool 3: SifyCI API -->
+                        <div class="card tool-card p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-start space-x-3">
+                                    <div class="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-cloud text-indigo-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">SifyCI API</h4>
+                                        <div class="flex items-center mt-1">
+                                            <span class="status-indicator status-active"></span>
+                                            <span class="text-xs text-gray-500">Active</span>
+                                            <span class="mx-2 text-gray-300">|</span>
+                                            <span class="text-xs text-gray-500">Cloud Providers</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <button class="text-sm text-gray-600 hover:text-gray-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-gray-600 mb-3">API for managing Sify Cloud Infinit resources, services, and infrastructure.</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">API</span>
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">SDK</span>
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">CLI</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="mcp-indicator text-xs">
+                                        <i class="fas fa-brain mr-1"></i> MCP
+                                    </span>
+                                    <span class="direct-indicator text-xs">
+                                        <i class="fas fa-bolt mr-1"></i> Direct
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">Configure</button>
+                                    <button class="text-xs text-gray-600 hover:text-gray-800">Disable</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tool 4: Terraform -->
+                        <div class="card tool-card p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-start space-x-3">
+                                    <div class="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-cubes text-purple-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Terraform</h4>
+                                        <div class="flex items-center mt-1">
+                                            <span class="status-indicator status-active"></span>
+                                            <span class="text-xs text-gray-500">Active</span>
+                                            <span class="mx-2 text-gray-300">|</span>
+                                            <span class="text-xs text-gray-500">IaC</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <button class="text-sm text-gray-600 hover:text-gray-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-gray-600 mb-3">Infrastructure as Code tool for building, changing, and versioning infrastructure safely and efficiently.</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">CLI</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="direct-indicator text-xs">
+                                        <i class="fas fa-bolt mr-1"></i> Direct
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">Configure</button>
+                                    <button class="text-xs text-gray-600 hover:text-gray-800">Disable</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tool 5: Ansible -->
+                        <div class="card tool-card p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-start space-x-3">
+                                    <div class="h-10 w-10 bg-red-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-cogs text-red-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Ansible</h4>
+                                        <div class="flex items-center mt-1">
+                                            <span class="status-indicator status-active"></span>
+                                            <span class="text-xs text-gray-500">Active</span>
+                                            <span class="mx-2 text-gray-300">|</span>
+                                            <span class="text-xs text-gray-500">IaC</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <button class="text-sm text-gray-600 hover:text-gray-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-gray-600 mb-3">Automation tool for configuration management, application deployment, and task automation.</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">CLI</span>
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">API</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="direct-indicator text-xs">
+                                        <i class="fas fa-bolt mr-1"></i> Direct
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">Configure</button>
+                                    <button class="text-xs text-gray-600 hover:text-gray-800">Disable</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tool 6: AWS API -->
+                        <div class="card tool-card p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-start space-x-3">
+                                    <div class="h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                        <i class="fab fa-aws text-yellow-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">AWS API</h4>
+                                        <div class="flex items-center mt-1">
+                                            <span class="status-indicator status-active"></span>
+                                            <span class="text-xs text-gray-500">Active</span>
+                                            <span class="mx-2 text-gray-300">|</span>
+                                            <span class="text-xs text-gray-500">Cloud Providers</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <button class="text-sm text-gray-600 hover:text-gray-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-gray-600 mb-3">API for managing Amazon Web Services resources, services, and infrastructure.</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">API</span>
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">SDK</span>
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">CLI</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="mcp-indicator text-xs">
+                                        <i class="fas fa-brain mr-1"></i> MCP
+                                    </span>
+                                    <span class="direct-indicator text-xs">
+                                        <i class="fas fa-bolt mr-1"></i> Direct
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">Configure</button>
+                                    <button class="text-xs text-gray-600 hover:text-gray-800">Disable</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tool Details Panel -->
+                    <div class="mt-8">
+                        <h3 class="text-lg font-semibold mb-4">Tool Details: Zabbix</h3>
+                        
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <!-- Connection Settings -->
+                                <div>
+                                    <h4 class="font-medium mb-3">Connection Settings</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">API URL</label>
+                                            <input type="text" value="https://zabbix.sify.com/api_jsonrpc.php" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                                            <input type="text" value="api_user" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                            <input type="password" value="••••••••••••" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Connection Status</label>
+                                            <div class="flex items-center">
+                                                <span class="status-indicator status-active"></span>
+                                                <span class="text-sm">Connected</span>
+                                                <button class="ml-2 text-xs text-blue-600 hover:text-blue-800">Test Connection</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Access Methods -->
+                                <div>
+                                    <h4 class="font-medium mb-3">Access Methods</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="flex items-center">
+                                                <input type="checkbox" checked class="form-checkbox h-4 w-4 text-blue-600">
+                                                <span class="ml-2 text-sm">Enable MCP (Model Context Protocol)</span>
+                                            </label>
+                                            <p class="text-xs text-gray-500 mt-1 ml-6">Allows agents to access Zabbix data through context window</p>
+                                        </div>
+                                        <div>
+                                            <label class="flex items-center">
+                                                <input type="checkbox" checked class="form-checkbox h-4 w-4 text-blue-600">
+                                                <span class="ml-2 text-sm">Enable Direct API Calls</span>
+                                            </label>
+                                            <p class="text-xs text-gray-500 mt-1 ml-6">Allows agents to make direct API calls to Zabbix</p>
+                                        </div>
+                                        <div class="mt-4">
+                                            <h5 class="text-sm font-medium text-gray-700 mb-2">Allowed Methods</h5>
+                                            <div class="space-y-1">
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" checked class="form-checkbox h-4 w-4 text-blue-600">
+                                                    <span class="ml-2 text-sm">host.get</span>
+                                                </label>
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" checked class="form-checkbox h-4 w-4 text-blue-600">
+                                                    <span class="ml-2 text-sm">item.get</span>
+                                                </label>
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" checked class="form-checkbox h-4 w-4 text-blue-600">
+                                                    <span class="ml-2 text-sm">problem.get</span>
+                                                </label>
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                                    <span class="ml-2 text-sm">host.create</span>
+                                                </label>
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                                    <span class="ml-2 text-sm">host.update</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Usage Statistics -->
+                                <div>
+                                    <h4 class="font-medium mb-3">Usage Statistics</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">API Calls (Last 24h)</label>
+                                            <div class="flex items-center">
+                                                <span class="text-lg font-semibold">1,247</span>
+                                                <span class="ml-2 text-xs text-green-600">+12% <i class="fas fa-arrow-up"></i></span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Agents Using This Tool</label>
+                                            <div class="flex items-center">
+                                                <span class="text-lg font-semibold">8</span>
+                                                <button class="ml-2 text-xs text-blue-600 hover:text-blue-800">View List</button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Workflows Using This Tool</label>
+                                            <div class="flex items-center">
+                                                <span class="text-lg font-semibold">3</span>
+                                                <button class="ml-2 text-xs text-blue-600 hover:text-blue-800">View List</button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Last Used</label>
+                                            <div class="text-sm">2 minutes ago</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 flex justify-end">
+                                <button class="btn-secondary mr-2">Cancel</button>
+                                <button class="btn-primary">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

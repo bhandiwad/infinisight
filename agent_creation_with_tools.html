@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Creation - Sify Autonomous Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="sify-theme.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--sify-background-light);
+        }
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: var(--sify-card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .tab-button {
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .tab-button:hover {
+            color: var(--sify-primary);
+        }
+        .tab-button.active {
+            color: var(--sify-primary);
+            border-bottom-color: var(--sify-primary);
+        }
+        .tool-card {
+            border: 1px solid var(--sify-border-light);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .tool-card:hover {
+            border-color: var(--sify-primary);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .tool-card.active {
+            border-color: var(--sify-primary);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .status-badge.active {
+            background-color: #DCFCE7;
+            color: #166534;
+        }
+        .status-badge.inactive {
+            background-color: #FEF2F2;
+            color: #991B1B;
+        }
+        .status-badge.pending {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+        .tool-category-badge {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 9999px;
+            background-color: #E0E7FF;
+            color: #4338CA;
+            display: inline-flex;
+            align-items: center;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+        .step {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .step.active .step-circle {
+            background-color: var(--sify-primary);
+            border-color: var(--sify-primary);
+            color: white;
+        }
+        .step.completed .step-circle {
+            background-color: var(--sify-primary);
+            border-color: var(--sify-primary);
+            color: white;
+        }
+        .step-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        .step.active .step-label {
+            color: var(--sify-primary);
+            font-weight: 500;
+        }
+        .step.completed .step-label {
+            color: var(--sify-primary);
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: var(--sify-primary);
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- Top Navigation -->
+        <header class="sify-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <div class="sify-logo">
+		    <span class="one">One</span><span class="sify">Sify</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="font-medium">Admin User</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex">
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 sify-sidebar py-6 flex-shrink-0">
+                <nav class="px-4">
+                    <div class="space-y-1">
+                        <a href="operations_dashboard.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tachometer-alt w-5"></i>
+                            <span>Operations Dashboard</span>
+                        </a>
+                        <a href="agent_studio.html" class="nav-item active flex items-center space-x-3">
+                            <i class="fas fa-robot w-5"></i>
+                            <span>Agent Studio</span>
+                        </a>
+                        <a href="workflow_builder.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-project-diagram w-5"></i>
+                            <span>Workflow Builder</span>
+                        </a>
+                        <a href="tool_management.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tools w-5"></i>
+                            <span>Tool Management</span>
+                        </a>
+                        <a href="reporting_and_analytics.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-chart-line w-5"></i>
+                            <span>Reports & Analytics</span>
+                        </a>
+                        <a href="collaboration_interface.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-comments w-5"></i>
+                            <span>Collaboration</span>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            Agent Categories
+                        </h3>
+                        <div class="mt-2 space-y-1">
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-desktop w-5"></i>
+                                <span>Monitoring Agents</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-wrench w-5"></i>
+                                <span>Incident Response</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-search w-5"></i>
+                                <span>Analysis Agents</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-shield-alt w-5"></i>
+                                <span>Security Agents</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-dollar-sign w-5"></i>
+                                <span>Cost Optimization</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto sify-content p-6">
+                <div class="dashboard-container">
+                    <!-- Breadcrumb -->
+                    <div class="sify-breadcrumb mb-4">
+                        <a href="operations_dashboard.html">Home</a>
+                        <span class="separator">/</span>
+                        <a href="agent_studio.html">Agent Studio</a>
+                        <span class="separator">/</span>
+                        <span>Create New Agent</span>
+                    </div>
+                    
+                    <!-- Page Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Create New Agent</h2>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center">
+                                <i class="fas fa-save mr-2"></i>
+                                <span>Save Draft</span>
+                            </button>
+                            <button class="sify-button-primary px-4 py-2 rounded-lg flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                <span>Create Agent</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step Indicator -->
+                    <div class="step-indicator mb-8">
+                        <div class="step completed">
+                            <div class="step-circle">
+                                <i class="fas fa-check text-sm"></i>
+                            </div>
+                            <div class="step-label">Basic Info</div>
+                        </div>
+                        <div class="step completed">
+                            <div class="step-circle">
+                                <i class="fas fa-check text-sm"></i>
+                            </div>
+                            <div class="step-label">Capabilities</div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Tool Selection</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">4</div>
+                            <div class="step-label">MCP Configuration</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">5</div>
+                            <div class="step-label">A2A Settings</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">6</div>
+                            <div class="step-label">Review</div>
+                        </div>
+                    </div>
+
+                    <!-- Agent Creation Form -->
+                    <div class="card p-6 mb-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-semibold">Tool Selection & Configuration</h3>
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-600 mr-2">Show recommended tools only</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Tool Categories Tabs -->
+                        <div class="border-b border-gray-200 mb-6">
+                            <div class="flex space-x-8">
+                                <button class="tab-button active">All Tools</button>
+                                <button class="tab-button">Monitoring</button>
+                                <button class="tab-button">ITSM</button>
+                                <button class="tab-button">Cloud Providers</button>
+                                <button class="tab-button">Infrastructure as Code</button>
+                                <button class="tab-button">Security</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Search and Filter -->
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                            <div class="w-full md:w-1/3 mb-4 md:mb-0">
+                                <div class="relative">
+                                    <input type="text" placeholder="Search tools..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-search text-gray-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-gray-600">Access Method:</span>
+                                <select class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option>All</option>
+                                    <option>Direct Call</option>
+                                    <option>MCP</option>
+                                    <option>Both</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Selected Tools Section -->
+                        <div class="mb-6">
+                            <h4 class="text-md font-medium text-gray-700 mb-3">Selected Tools (5)</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <div class="flex flex-wrap gap-2">
+                                    <div class="bg-white px-3 py-2 rounded-lg border border-gray-300 flex items-center">
+                                        <span class="text-sm font-medium">Zabbix</span>
+                                        <button class="ml-2 text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-times-circle"></i>
+                                        </button>
+                                    </div>
+                                    <div class="bg-white px-3 py-2 rounded-lg border border-gray-300 flex items-center">
+                                        <span class="text-sm font-medium">ServiceNow</span>
+                                        <button class="ml-2 text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-times-circle"></i>
+                                        </button>
+                                    </div>
+                                    <div class="bg-white px-3 py-2 rounded-lg border border-gray-300 flex items-center">
+                                        <span class="text-sm font-medium">SifyCI API</span>
+                                        <button class="ml-2 text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-times-circle"></i>
+                                        </button>
+                                    </div>
+                                    <div class="bg-white px-3 py-2 rounded-lg border border-gray-300 flex items-center">
+                                        <span class="text-sm font-medium">AWS API</span>
+                                        <button class="ml-2 text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-times-circle"></i>
+                                        </button>
+                                    </div>
+                                    <div class="bg-white px-3 py-2 rounded-lg border border-gray-300 flex items-center">
+                                        <span class="text-sm font-medium">Terraform</span>
+                                        <button class="ml-2 text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-times-circle"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Available Tools Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Tool 1: Zabbix -->
+                            <div class="tool-card active p-4">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 rounded bg-red-100 flex items-center justify-center mr-3">
+                                            <i class="fas fa-chart-line text-red-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Zabbix</h4>
+                                            <div class="flex items-center mt-1">
+                                                <span class="status-badge active text-xs">
+                                                    <i class="fas fa-circle mr-1 text-xs"></i> Active
+                                                </span>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                <span class="tool-category-badge text-xs">
+                                                    Monitoring
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex">
+                                        <input type="checkbox" checked class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-600">Infrastructure monitoring platform for metrics collection and alerting.</p>
+                                </div>
+                                <div class="mt-3 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="text-xs text-gray-500 mr-2">Access Method:</span>
+                                        <select class="text-xs px-2 py-1 border border-gray-300 rounded-md">
+                                            <option>Both</option>
+                                            <option>Direct Call</option>
+                                            <option>MCP</option>
+                                        </select>
+                                    </div>
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">
+                                        Configure Methods
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Tool 2: ServiceNow -->
+                            <div class="tool-card active p-4">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 rounded bg-green-100 flex items-center justify-center mr-3">
+                                            <i class="fas fa-ticket-alt text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">ServiceNow</h4>
+                                            <div class="flex items-center mt-1">
+                                                <span class="status-badge active text-xs">
+                                                    <i class="fas fa-circle mr-1 text-xs"></i> Active
+                                                </span>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                <span class="tool-category-badge text-xs">
+                                                    ITSM
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex">
+                                        <input type="checkbox" checked class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-600">IT Service Management platform for tickets, CMDB, and change management.</p>
+                                </div>
+                                <div class="mt-3 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="text-xs text-gray-500 mr-2">Access Method:</span>
+                                        <select class="text-xs px-2 py-1 border border-gray-300 rounded-md">
+                                            <option>Direct Call</option>
+                                            <option>MCP</option>
+                                            <option>Both</option>
+                                        </select>
+                                    </div>
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">
+                                        Configure Methods
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Tool 3: SifyCI API -->
+                            <div class="tool-card active p-4">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 rounded bg-blue-100 flex items-center justify-center mr-3">
+                                            <i class="fas fa-cloud text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">SifyCI API</h4>
+                                            <div class="flex items-center mt-1">
+                                                <span class="status-badge active text-xs">
+                                                    <i class="fas fa-circle mr-1 text-xs"></i> Active
+                                                </span>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                <span class="tool-category-badge text-xs">
+                                                    Cloud Providers
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex">
+                                        <input type="checkbox" checked class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-600">Sify Cloud Infrastructure API for resource management and operations.</p>
+                                </div>
+                                <div class="mt-3 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="text-xs text-gray-500 mr-2">Access Method:</span>
+                                        <select class="text-xs px-2 py-1 border border-gray-300 rounded-md">
+                                            <option>Both</option>
+                                            <option>Direct Call</option>
+                                            <option>MCP</option>
+                                        </select>
+                                    </div>
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">
+                                        Configure Methods
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Tool 4: Terraform -->
+                            <div class="tool-card active p-4">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 rounded bg-purple-100 flex items-center justify-center mr-3">
+                                            <i class="fas fa-code-branch text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Terraform</h4>
+                                            <div class="flex items-center mt-1">
+                                                <span class="status-badge active text-xs">
+                                                    <i class="fas fa-circle mr-1 text-xs"></i> Active
+                                                </span>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                <span class="tool-category-badge text-xs">
+                                                    Infrastructure as Code
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex">
+                                        <input type="checkbox" checked class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-600">Infrastructure as Code tool for provisioning and managing cloud resources.</p>
+                                </div>
+                                <div class="mt-3 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="text-xs text-gray-500 mr-2">Access Method:</span>
+                                        <select class="text-xs px-2 py-1 border border-gray-300 rounded-md">
+                                            <option>Direct Call</option>
+                                            <option>MCP</option>
+                                            <option>Both</option>
+                                        </select>
+                                    </div>
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">
+                                        Configure Methods
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Tool 5: Ansible -->
+                            <div class="tool-card p-4">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 rounded bg-yellow-100 flex items-center justify-center mr-3">
+                                            <i class="fas fa-cogs text-yellow-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Ansible</h4>
+                                            <div class="flex items-center mt-1">
+                                                <span class="status-badge active text-xs">
+                                                    <i class="fas fa-circle mr-1 text-xs"></i> Active
+                                                </span>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                <span class="tool-category-badge text-xs">
+                                                    Infrastructure as Code
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex">
+                                        <input type="checkbox" class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-600">Configuration management and application deployment tool.</p>
+                                </div>
+                                <div class="mt-3 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="text-xs text-gray-500 mr-2">Access Method:</span>
+                                        <select class="text-xs px-2 py-1 border border-gray-300 rounded-md">
+                                            <option>Direct Call</option>
+                                            <option>MCP</option>
+                                            <option>Both</option>
+                                        </select>
+                                    </div>
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">
+                                        Configure Methods
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Tool 6: AWS API -->
+                            <div class="tool-card active p-4">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 rounded bg-orange-100 flex items-center justify-center mr-3">
+                                            <i class="fab fa-aws text-orange-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">AWS API</h4>
+                                            <div class="flex items-center mt-1">
+                                                <span class="status-badge active text-xs">
+                                                    <i class="fas fa-circle mr-1 text-xs"></i> Active
+                                                </span>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                <span class="tool-category-badge text-xs">
+                                                    Cloud Providers
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex">
+                                        <input type="checkbox" checked class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-600">Amazon Web Services API for cloud resource management.</p>
+                                </div>
+                                <div class="mt-3 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="text-xs text-gray-500 mr-2">Access Method:</span>
+                                        <select class="text-xs px-2 py-1 border border-gray-300 rounded-md">
+                                            <option>MCP</option>
+                                            <option>Direct Call</option>
+                                            <option>Both</option>
+                                        </select>
+                                    </div>
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">
+                                        Configure Methods
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tool Method Configuration -->
+                    <div class="card p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4">Tool Method Configuration: Zabbix</h3>
+                        
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-medium text-gray-700">Access Methods</h4>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-600 mr-2">Enable All Methods</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Direct Call Configuration -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h5 class="font-medium">Direct Call</h5>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">Agent will directly call Zabbix API methods without using MCP context.</p>
+                                    
+                                    <div class="mb-3">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Method Access</label>
+                                        <div class="space-y-2">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="direct_read" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                                <label for="direct_read" class="ml-2 text-sm text-gray-700">Read Methods (get*)</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="direct_write" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                                <label for="direct_write" class="ml-2 text-sm text-gray-700">Write Methods (update*, create*)</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="direct_delete" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                                <label for="direct_delete" class="ml-2 text-sm text-gray-700">Delete Methods (delete*)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Rate Limiting</label>
+                                        <div class="flex items-center">
+                                            <input type="number" value="100" class="w-20 px-2 py-1 border border-gray-300 rounded-md mr-2">
+                                            <span class="text-sm text-gray-600">requests per minute</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- MCP Configuration -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h5 class="font-medium">MCP (Model Context Protocol)</h5>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">Agent will access Zabbix data through MCP context for enhanced reasoning.</p>
+                                    
+                                    <div class="mb-3">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Context Sources</label>
+                                        <div class="space-y-2">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="mcp_hosts" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                                <label for="mcp_hosts" class="ml-2 text-sm text-gray-700">Host Information</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="mcp_metrics" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                                <label for="mcp_metrics" class="ml-2 text-sm text-gray-700">Performance Metrics</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="mcp_alerts" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                                <label for="mcp_alerts" class="ml-2 text-sm text-gray-700">Alerts & Events</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Context Refresh</label>
+                                        <div class="flex items-center">
+                                            <select class="px-2 py-1 border border-gray-300 rounded-md">
+                                                <option>Every 5 minutes</option>
+                                                <option>Every 15 minutes</option>
+                                                <option>Every 30 minutes</option>
+                                                <option>Every hour</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Method-Specific Configuration -->
+                        <div>
+                            <h4 class="font-medium text-gray-700 mb-3">Method-Specific Configuration</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Method Name</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Direct Call</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">MCP</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Human Approval</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">getHosts</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Retrieve monitored hosts</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">getItems</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Retrieve monitored items</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">getAlerts</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Retrieve active alerts</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">getHistory</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Retrieve historical data</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">acknowledgeEvent</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Acknowledge alert</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between">
+                        <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            <span>Previous: Capabilities</span>
+                        </button>
+                        <button class="sify-button-primary px-4 py-2 rounded-lg flex items-center">
+                            <span>Next: MCP Configuration</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

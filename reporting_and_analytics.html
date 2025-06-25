@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporting & Analytics - Sify InfiniSight</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="sify-theme.css">
+    <link rel="stylesheet" href="sify-banner.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--sify-background-light);
+        }
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- InfiniSight Banner -->
+        <div class="sify-banner">
+            <div class="sify-banner-logo">
+                <span class="one">One</span><span class="sify">Sify</span>
+                <span class="infinisight">InfiniSight</span>
+            </div>
+            <div class="sify-banner-tagline">
+                Autonomous Insight, Always On
+            </div>
+        </div>
+        
+        <!-- Top Navigation -->
+        <header class="sify-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <div class="sify-logo">
+                    <span class="one">One</span><span class="sify">Sify</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full ml-4">InfiniSight</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="font-medium">Admin User</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex">
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 sify-sidebar py-6 flex-shrink-0">
+                <nav class="px-4">
+                    <div class="space-y-1">
+                        <a href="operations_dashboard.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tachometer-alt w-5"></i>
+                            <span>Operations Dashboard</span>
+                        </a>
+                        <a href="agent_studio.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-robot w-5"></i>
+                            <span>Agent Studio</span>
+                        </a>
+                        <a href="workflow_builder.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-project-diagram w-5"></i>
+                            <span>Workflow Builder</span>
+                        </a>
+                        <a href="tool_management.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tools w-5"></i>
+                            <span>Tool Management</span>
+                        </a>
+                        <a href="reporting_and_analytics.html" class="nav-item active flex items-center space-x-3">
+                            <i class="fas fa-chart-line w-5"></i>
+                            <span>Reports & Analytics</span>
+                        </a>
+                        <a href="collaboration_interface.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-comments w-5"></i>
+                            <span>Collaboration</span>
+                        </a>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto sify-content p-6">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Breadcrumb -->
+                    <div class="sify-breadcrumb mb-4">
+                        <a href="operations_dashboard.html">Home</a>
+                        <span class="separator">/</span>
+                        <span>Reporting & Analytics</span>
+                    </div>
+                    
+                    <!-- Page Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Reporting & Analytics</h2>
+                            <p class="text-sm text-gray-500">Performance metrics and insights across your infrastructure</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="relative">
+                                <select class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option>Last 24 Hours</option>
+                                    <option>Last 7 Days</option>
+                                    <option>Last 30 Days</option>
+                                    <option>Custom Range</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary">
+                                <i class="fas fa-download mr-2"></i>
+                                Export Report
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-white rounded-lg shadow-sm p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm text-gray-500">Total Incidents</p>
+                                    <h3 class="text-2xl font-bold">42</h3>
+                                    <p class="text-xs text-green-600 mt-1">
+                                        <i class="fas fa-arrow-down"></i> 12% from last period
+                                    </p>
+                                </div>
+                                <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-exclamation-triangle text-blue-600"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-sm p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm text-gray-500">Avg. Resolution Time</p>
+                                    <h3 class="text-2xl font-bold">18.5m</h3>
+                                    <p class="text-xs text-green-600 mt-1">
+                                        <i class="fas fa-arrow-down"></i> 24% from last period
+                                    </p>
+                                </div>
+                                <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-clock text-green-600"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-sm p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm text-gray-500">Cost Savings</p>
+                                    <h3 class="text-2xl font-bold">₹1.2L</h3>
+                                    <p class="text-xs text-green-600 mt-1">
+                                        <i class="fas fa-arrow-up"></i> 8% from last period
+                                    </p>
+                                </div>
+                                <div class="h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-rupee-sign text-yellow-600"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-sm p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm text-gray-500">Agent Accuracy</p>
+                                    <h3 class="text-2xl font-bold">97.8%</h3>
+                                    <p class="text-xs text-green-600 mt-1">
+                                        <i class="fas fa-arrow-up"></i> 2.3% from last period
+                                    </p>
+                                </div>
+                                <div class="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-bullseye text-purple-600"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <!-- Incident Trends Chart -->
+                        <div class="bg-white rounded-lg shadow-sm p-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-medium">Incident Trends</h3>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 rounded-md bg-gray-100">Daily</button>
+                                    <button class="text-xs text-blue-600 px-2 py-1 rounded-md bg-blue-100">Weekly</button>
+                                    <button class="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 rounded-md bg-gray-100">Monthly</button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="incidentTrendsChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Resource Utilization Chart -->
+                        <div class="bg-white rounded-lg shadow-sm p-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-medium">Resource Utilization</h3>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 rounded-md bg-gray-100">CPU</button>
+                                    <button class="text-xs text-blue-600 px-2 py-1 rounded-md bg-blue-100">Memory</button>
+                                    <button class="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 rounded-md bg-gray-100">Storage</button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="resourceUtilizationChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Agent Performance Table -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-medium">Agent Performance</h3>
+                            <button class="text-sm text-blue-600 hover:text-blue-800">
+                                View All
+                            </button>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead>
+                                    <tr>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent</th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tasks Completed</th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg. Response Time</th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Success Rate</th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Efficiency Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                    <i class="fas fa-robot text-blue-600"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="font-medium">Incident Response Agent</div>
+                                                    <div class="text-xs text-gray-500">v2.3.1</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm">247</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm">12.4s</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm">98.2%</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-16 bg-gray-200 rounded-full h-2.5 mr-2">
+                                                    <div class="bg-green-600 h-2.5 rounded-full" style="width: 95%"></div>
+                                                </div>
+                                                <span class="text-sm font-medium">9.5</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                                    <i class="fas fa-robot text-green-600"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="font-medium">Cost Optimizer Agent</div>
+                                                    <div class="text-xs text-gray-500">v1.8.5</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm">183</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm">24.7s</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm">97.5%</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-16 bg-gray-200 rounded-full h-2.5 mr-2">
+                                                    <div class="bg-green-600 h-2.5 rounded-full" style="width: 92%"></div>
+                                                </div>
+                                                <span class="text-sm font-medium">9.2</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                                    <i class="fas fa-robot text-purple-600"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="font-medium">Security Agent</div>
+                                                    <div class="text-xs text-gray-500">v2.1.0</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm">312</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm">8.2s</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm">99.1%</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-16 bg-gray-200 rounded-full h-2.5 mr-2">
+                                                    <div class="bg-green-600 h-2.5 rounded-full" style="width: 98%"></div>
+                                                </div>
+                                                <span class="text-sm font-medium">9.8</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Cost Optimization Insights -->
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-medium">Cost Optimization Insights</h3>
+                            <button class="text-sm text-blue-600 hover:text-blue-800">
+                                View All Recommendations
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-lightbulb text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Rightsizing Opportunity</h4>
+                                            <p class="text-sm text-gray-600 mt-1">12 instances identified as oversized based on CPU and memory utilization patterns.</p>
+                                            <p class="text-sm font-medium text-green-600 mt-2">Potential monthly savings: ₹45,000</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="btn-primary btn-sm">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-calendar-alt text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Scheduling Recommendation</h4>
+                                            <p class="text-sm text-gray-600 mt-1">5 non-production environments can be scheduled to automatically shut down during non-business hours.</p>
+                                            <p class="text-sm font-medium text-green-600 mt-2">Potential monthly savings: ₹28,500</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="btn-primary btn-sm">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-database text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Storage Optimization</h4>
+                                            <p class="text-sm text-gray-600 mt-1">3.2 TB of unused EBS volumes and 1.8 TB of infrequently accessed S3 data identified.</p>
+                                            <p class="text-sm font-medium text-green-600 mt-2">Potential monthly savings: ₹18,200</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="btn-primary btn-sm">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Incident Trends Chart
+        const incidentTrendsCtx = document.getElementById('incidentTrendsChart').getContext('2d');
+        const incidentTrendsChart = new Chart(incidentTrendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [
+                    {
+                        label: 'Critical',
+                        data: [12, 8, 5, 3],
+                        borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'High',
+                        data: [18, 15, 12, 10],
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Medium',
+                        data: [25, 22, 20, 18],
+                        borderColor: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Low',
+                        data: [30, 28, 25, 22],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Resource Utilization Chart
+        const resourceUtilizationCtx = document.getElementById('resourceUtilizationChart').getContext('2d');
+        const resourceUtilizationChart = new Chart(resourceUtilizationCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'AWS',
+                        data: [75, 78, 82, 79, 85, 70, 68],
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Azure',
+                        data: [65, 68, 70, 72, 75, 60, 58],
+                        borderColor: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Sify CI',
+                        data: [55, 60, 65, 68, 70, 50, 48],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

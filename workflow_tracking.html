@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow Tracking - Sify InfiniSight</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="sify-theme.css">
+    <link rel="stylesheet" href="sify-banner.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--sify-background-light);
+        }
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: var(--sify-card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .workflow-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .workflow-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+        .router-agent-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #667eea;
+        }
+        .router-agent-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        .router-agent-card:hover {
+            border-color: #a855f7;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        .workflow-node {
+            position: relative;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            background-color: white;
+            min-width: 160px;
+            text-align: center;
+        }
+        .workflow-line {
+            position: absolute;
+            height: 2px;
+            background-color: #64748b;
+            top: 50%;
+            left: 100%;
+            width: 40px;
+        }
+        .workflow-arrow {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-left: 8px solid #64748b;
+        }
+        .status-running {
+            background-color: #fef3c7;
+            border-color: #f59e0b;
+        }
+        .status-completed {
+            background-color: #d1fae5;
+            border-color: #10b981;
+        }
+        .status-failed {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+        }
+        .status-pending {
+            background-color: #f3f4f6;
+            border-color: #6b7280;
+        }
+        .workflow-progress {
+            height: 4px;
+            background-color: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .workflow-progress-bar {
+            height: 100%;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .router-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .router-stat {
+            text-align: center;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+        .router-stat-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        .router-stat-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+        .config-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        .config-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- InfiniSight Banner -->
+        <div class="sify-banner">
+            <div class="sify-banner-logo">
+                <span class="one">ONE</span><span class="sify">sify</span>
+                <span class="infinisight">InfiniSight</span>
+            </div>
+            <div class="sify-banner-tagline">
+                Autonomous Insight, Always On
+            </div>
+        </div>
+        
+        <!-- Top Navigation -->
+        <header class="sify-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <div class="sify-logo">
+                    <span class="one">ONE</span><span class="sify">sify</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full ml-4">INFINISIGHT</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">12</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="font-medium">Admin User</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex">
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 sify-sidebar py-6 flex-shrink-0">
+                <nav class="px-4">
+                    <div class="space-y-1">
+                        <a href="operations_dashboard.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tachometer-alt w-5"></i>
+                            <span>Operations Dashboard</span>
+                        </a>
+                        <a href="agent_studio.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-robot w-5"></i>
+                            <span>Agent Studio</span>
+                        </a>
+                        <a href="workflow_tracking.html" class="nav-item active flex items-center space-x-3">
+                            <i class="fas fa-project-diagram w-5"></i>
+                            <span>Workflow Tracking</span>
+                        </a>
+                        <a href="tool_management.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tools w-5"></i>
+                            <span>Tool Management</span>
+                        </a>
+                        <a href="reporting_and_analytics.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-chart-line w-5"></i>
+                            <span>Reports & Analytics</span>
+                        </a>
+                        <a href="collaboration_interface.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-comments w-5"></i>
+                            <span>Collaboration</span>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            Environment
+                        </h3>
+                        <div class="mt-2 space-y-1">
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fab fa-aws w-5"></i>
+                                <span>AWS</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fab fa-microsoft w-5"></i>
+                                <span>Azure</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fab fa-google w-5"></i>
+                                <span>GCP</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-cloud w-5"></i>
+                                <span>Sify CI</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            Settings
+                        </h3>
+                        <div class="mt-2 space-y-1">
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-cog w-5"></i>
+                                <span>Platform Settings</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-user-cog w-5"></i>
+                                <span>User Preferences</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-key w-5"></i>
+                                <span>API Keys</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto sify-content p-6">
+                <div class="dashboard-container">
+                    <!-- Breadcrumb -->
+                    <div class="sify-breadcrumb mb-4">
+                        <a href="operations_dashboard.html">Home</a>
+                        <span class="separator">/</span>
+                        <span>Workflow Tracking</span>
+                    </div>
+                    
+                    <!-- Page Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Workflow Tracking</h2>
+                            <p class="text-sm text-gray-500">Monitor and manage all active workflows</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="btn-secondary">
+                                <i class="fas fa-filter mr-2"></i>
+                                Filter
+                            </button>
+                            <button class="btn-primary" onclick="window.location.href='workflow_builder.html'">
+                                <i class="fas fa-plus mr-2"></i>
+                                Create Workflow
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Workflow Summary -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="card p-6 text-center">
+                            <div class="text-3xl font-bold text-blue-600 mb-2">1</div>
+                            <div class="text-sm text-gray-600">Router Agent</div>
+                        </div>
+                        <div class="card p-6 text-center">
+                            <div class="text-3xl font-bold text-green-600 mb-2">12</div>
+                            <div class="text-sm text-gray-600">Active Workflows</div>
+                        </div>
+                        <div class="card p-6 text-center">
+                            <div class="text-3xl font-bold text-orange-600 mb-2">47</div>
+                            <div class="text-sm text-gray-600">Completed Today</div>
+                        </div>
+                        <div class="card p-6 text-center">
+                            <div class="text-3xl font-bold text-purple-600 mb-2">3.2m</div>
+                            <div class="text-sm text-gray-600">Avg Duration</div>
+                        </div>
+                    </div>
+
+                    <!-- Router Agent - Primary Workflow -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <div class="pulse-dot mr-3"></div>
+                            Incident Router Agent
+                        </h3>
+                        
+                        <div class="workflow-card router-agent-card card p-6" onclick="window.location.href='incident_routing.html'">
+                            <button class="config-button" onclick="event.stopPropagation(); window.location.href='router_agent_config.html'">
+                                <i class="fas fa-cog mr-1"></i>
+                                Configure
+                            </button>
+                            
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Workflow Router Agent</h4>
+                                    <p class="text-sm opacity-90 mb-3">Intelligent incident routing and workflow orchestration</p>
+                                    <div class="flex items-center space-x-4 text-sm">
+                                        <span class="flex items-center">
+                                            <i class="fas fa-circle text-green-400 mr-2"></i>
+                                            Active
+                                        </span>
+                                        <span>Uptime: 7d 14h 32m</span>
+                                        <span>Accuracy: 94.2%</span>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-center opacity-90">Incidents Today</div>
+                                    <div class="text-center font-bold">247</div>
+                                </div>
+                            </div>
+                            
+                            <div class="router-stats">
+                                <div class="router-stat">
+                                    <div class="router-stat-value">1.3s</div>
+                                    <div class="router-stat-label">Avg Response</div>
+                                </div>
+                                <div class="router-stat">
+                                    <div class="router-stat-value">12</div>
+                                    <div class="router-stat-label">Active Routes</div>
+                                </div>
+                                <div class="router-stat">
+                                    <div class="router-stat-value">96%</div>
+                                    <div class="router-stat-label">Confidence</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-xs opacity-75">
+                                Click to view routing dashboard • Configure button for agent settings
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Workflows -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-4">Active Workflows</h3>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Database Incident Response -->
+                            <div class="workflow-card card p-6" onclick="window.location.href='workflow_builder.html'">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Database Incident Response</h4>
+                                        <p class="text-sm text-gray-600">Automated database performance diagnostics</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">Running</span>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span>Progress</span>
+                                        <span>Step 3 of 5</span>
+                                    </div>
+                                    <div class="workflow-progress">
+                                        <div class="workflow-progress-bar" style="width: 60%;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between text-sm text-gray-600">
+                                    <span>Started: 14:32</span>
+                                    <span>ETA: 2 min</span>
+                                </div>
+                                
+                                <div class="mt-3 text-xs text-gray-500">
+                                    Customer: Acme Financial • Priority: Critical
+                                </div>
+                            </div>
+
+                            <!-- Cost Optimization Analysis -->
+                            <div class="workflow-card card p-6" onclick="window.location.href='workflow_builder.html'">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Cost Optimization Analysis</h4>
+                                        <p class="text-sm text-gray-600">Multi-cloud cost analysis and recommendations</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">Running</span>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span>Progress</span>
+                                        <span>Step 7 of 8</span>
+                                    </div>
+                                    <div class="workflow-progress">
+                                        <div class="workflow-progress-bar" style="width: 87%;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between text-sm text-gray-600">
+                                    <span>Started: 13:45</span>
+                                    <span>ETA: 5 min</span>
+                                </div>
+                                
+                                <div class="mt-3 text-xs text-gray-500">
+                                    Scope: AWS + Azure • Potential Savings: $12,400/month
+                                </div>
+                            </div>
+
+                            <!-- Security Compliance Audit -->
+                            <div class="workflow-card card p-6" onclick="window.location.href='workflow_builder.html'">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Security Compliance Audit</h4>
+                                        <p class="text-sm text-gray-600">Automated security policy compliance check</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">Completed</span>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span>Progress</span>
+                                        <span>Completed</span>
+                                    </div>
+                                    <div class="workflow-progress">
+                                        <div class="workflow-progress-bar" style="width: 100%;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between text-sm text-gray-600">
+                                    <span>Completed: 12:15</span>
+                                    <span>Duration: 45 min</span>
+                                </div>
+                                
+                                <div class="mt-3 text-xs text-gray-500">
+                                    Result: 3 violations found • Report generated
+                                </div>
+                            </div>
+
+                            <!-- Performance Optimization -->
+                            <div class="workflow-card card p-6" onclick="window.location.href='workflow_builder.html'">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Performance Optimization</h4>
+                                        <p class="text-sm text-gray-600">Application performance tuning workflow</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-full">Failed</span>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span>Progress</span>
+                                        <span>Failed at Step 4</span>
+                                    </div>
+                                    <div class="workflow-progress">
+                                        <div class="workflow-progress-bar bg-red-500" style="width: 50%;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between text-sm text-gray-600">
+                                    <span>Failed: 11:30</span>
+                                    <span>Error: Timeout</span>
+                                </div>
+                                
+                                <div class="mt-3 text-xs text-gray-500">
+                                    Customer: Beta Corp • Retry scheduled: 15:00
+                                </div>
+                            </div>
+
+                            <!-- Automated Backup Verification -->
+                            <div class="workflow-card card p-6" onclick="window.location.href='workflow_builder.html'">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Automated Backup Verification</h4>
+                                        <p class="text-sm text-gray-600">Daily backup integrity and restore testing</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-800 text-xs font-semibold rounded-full">Scheduled</span>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span>Next Run</span>
+                                        <span>Tomorrow 02:00</span>
+                                    </div>
+                                    <div class="workflow-progress">
+                                        <div class="workflow-progress-bar bg-gray-400" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between text-sm text-gray-600">
+                                    <span>Last Run: Yesterday</span>
+                                    <span>Status: Success</span>
+                                </div>
+                                
+                                <div class="mt-3 text-xs text-gray-500">
+                                    Frequency: Daily • Scope: All production databases
+                                </div>
+                            </div>
+
+                            <!-- Network Diagnostics -->
+                            <div class="workflow-card card p-6" onclick="window.location.href='workflow_builder.html'">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Network Diagnostics</h4>
+                                        <p class="text-sm text-gray-600">Network latency and connectivity analysis</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">Running</span>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span>Progress</span>
+                                        <span>Step 2 of 6</span>
+                                    </div>
+                                    <div class="workflow-progress">
+                                        <div class="workflow-progress-bar" style="width: 33%;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between text-sm text-gray-600">
+                                    <span>Started: 14:45</span>
+                                    <span>ETA: 8 min</span>
+                                </div>
+                                
+                                <div class="mt-3 text-xs text-gray-500">
+                                    Customer: Gamma Ltd • Issue: High latency
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate real-time updates for progress bars
+            setInterval(function() {
+                const progressBars = document.querySelectorAll('.workflow-progress-bar');
+                progressBars.forEach(bar => {
+                    if (!bar.classList.contains('bg-red-500') && !bar.classList.contains('bg-gray-400')) {
+                        const currentWidth = parseInt(bar.style.width);
+                        if (currentWidth < 100) {
+                            bar.style.width = Math.min(currentWidth + Math.random() * 2, 100) + '%';
+                        }
+                    }
+                });
+            }, 5000);
+
+            // Update incident count for router agent
+            setInterval(function() {
+                const incidentCount = document.querySelector('.router-agent-card .text-2xl.font-bold');
+                if (incidentCount) {
+                    const current = parseInt(incidentCount.textContent);
+                    incidentCount.textContent = current + Math.floor(Math.random() * 2);
+                }
+            }, 30000);
+
+            // Add hover effects for workflow cards
+            const workflowCards = document.querySelectorAll('.workflow-card');
+            workflowCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

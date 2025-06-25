@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Routing Dashboard - Sify InfiniSight</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="sify-theme.css">
+    <link rel="stylesheet" href="sify-banner.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--sify-background-light);
+        }
+        .card {
+            background-color: var(--sify-card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+        .card:hover {
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        .routing-flow {
+            position: relative;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .routing-step {
+            position: relative;
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .routing-step:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .routing-arrow {
+            position: absolute;
+            top: 50%;
+            right: -20px;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 2px;
+            background: #64748b;
+            z-index: 10;
+        }
+        .routing-arrow::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid #64748b;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+        .incident-card {
+            border-left: 4px solid #3b82f6;
+            transition: all 0.2s ease;
+        }
+        .incident-card.critical {
+            border-left-color: #ef4444;
+        }
+        .incident-card.warning {
+            border-left-color: #f59e0b;
+        }
+        .incident-card.info {
+            border-left-color: #10b981;
+        }
+        .router-agent {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .router-agent::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        .workflow-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .workflow-option:hover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .workflow-option.selected {
+            border-color: #3b82f6;
+            background-color: #dbeafe;
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .routing-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .metric-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        .metric-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+        .routing-log {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background-color 0.2s ease;
+        }
+        .log-entry:hover {
+            background-color: #f9fafb;
+        }
+        .log-timestamp {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        .confidence-bar {
+            height: 4px;
+            background-color: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- InfiniSight Banner -->
+        <div class="sify-banner">
+            <div class="sify-banner-logo">
+                <span class="one">ONE</span><span class="sify">sify</span>
+                <span class="infinisight">InfiniSight</span>
+            </div>
+            <div class="sify-banner-tagline">
+                Autonomous Insight, Always On
+            </div>
+        </div>
+        
+        <!-- Top Navigation -->
+        <header class="sify-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <div class="sify-logo">
+                    <span class="one">ONE</span><span class="sify">sify</span>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full ml-4">INFINISIGHT</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">7</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="font-medium">Admin User</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex">
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 sify-sidebar py-6 flex-shrink-0">
+                <nav class="px-4">
+                    <div class="space-y-1">
+                        <a href="operations_dashboard.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tachometer-alt w-5"></i>
+                            <span>Operations Dashboard</span>
+                        </a>
+                        <a href="agent_studio.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-robot w-5"></i>
+                            <span>Agent Studio</span>
+                        </a>
+                        <a href="workflow_tracking.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-project-diagram w-5"></i>
+                            <span>Workflow Tracking</span>
+                        </a>
+                        <a href="incident_routing.html" class="nav-item active flex items-center space-x-3">
+                            <i class="fas fa-route w-5"></i>
+                            <span>Incident Routing</span>
+                        </a>
+                        <a href="tool_management.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-tools w-5"></i>
+                            <span>Tool Management</span>
+                        </a>
+                        <a href="reporting_and_analytics.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-chart-line w-5"></i>
+                            <span>Reports & Analytics</span>
+                        </a>
+                        <a href="collaboration_interface.html" class="nav-item flex items-center space-x-3">
+                            <i class="fas fa-comments w-5"></i>
+                            <span>Collaboration</span>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            Environment
+                        </h3>
+                        <div class="mt-2 space-y-1">
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fab fa-aws w-5"></i>
+                                <span>AWS</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fab fa-microsoft w-5"></i>
+                                <span>Azure</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fab fa-google w-5"></i>
+                                <span>GCP</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-cloud w-5"></i>
+                                <span>Sify CI</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            Settings
+                        </h3>
+                        <div class="mt-2 space-y-1">
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-cog w-5"></i>
+                                <span>Platform Settings</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-user-cog w-5"></i>
+                                <span>User Preferences</span>
+                            </a>
+                            <a href="#" class="nav-item flex items-center space-x-3">
+                                <i class="fas fa-key w-5"></i>
+                                <span>API Keys</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto sify-content p-6">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Breadcrumb -->
+                    <div class="sify-breadcrumb mb-4">
+                        <a href="operations_dashboard.html">Home</a>
+                        <span class="separator">/</span>
+                        <span>Incident Routing</span>
+                    </div>
+                    
+                    <!-- Page Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Incident Routing Dashboard</h2>
+                            <p class="text-sm text-gray-500">Monitor and manage intelligent incident routing</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="btn-secondary">
+                                <i class="fas fa-cog mr-2"></i>
+				<a href="router_agent_config.html">Configure</a>
+                            </button>
+                            <button class="btn-primary">
+                                <i class="fas fa-plus mr-2"></i>
+                                Add Routing Rule
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Routing Metrics -->
+                    <div class="routing-metrics mb-8">
+                        <div class="metric-card">
+                            <div class="metric-value text-blue-600">247</div>
+                            <div class="metric-label">Incidents Routed Today</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value text-green-600">94.2%</div>
+                            <div class="metric-label">Routing Accuracy</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value text-purple-600">1.3s</div>
+                            <div class="metric-label">Avg Routing Time</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value text-orange-600">12</div>
+                            <div class="metric-label">Active Workflows</div>
+                        </div>
+                    </div>
+
+                    <!-- Live Routing Flow Visualization -->
+                    <div class="card p-6 mb-8">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <div class="pulse-dot mr-3"></div>
+                            Live Incident Routing Flow
+                        </h3>
+                        
+                        <div class="routing-flow">
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+                                <!-- Step 1: Incident Received -->
+                                <div class="routing-step">
+                                    <div class="flex items-center mb-3">
+                                        <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-exclamation-triangle text-blue-600"></i>
+                                        </div>
+                                        <h4 class="font-semibold">Incident Received</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Database timeout alert from Zabbix</p>
+                                    <div class="text-xs text-gray-500">Source: AWS RDS</div>
+                                    <div class="routing-arrow"></div>
+                                </div>
+                                
+                                <!-- Step 2: Router Agent Analysis -->
+                                <div class="routing-step router-agent">
+                                    <div class="flex items-center mb-3">
+                                        <div class="h-10 w-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-brain text-white"></i>
+                                        </div>
+                                        <h4 class="font-semibold">Router Agent</h4>
+                                    </div>
+                                    <p class="text-sm mb-2">Analyzing incident characteristics</p>
+                                    <div class="text-xs opacity-90">Confidence: 96%</div>
+                                    <div class="confidence-bar">
+                                        <div class="confidence-fill" style="width: 96%;"></div>
+                                    </div>
+                                    <div class="routing-arrow"></div>
+                                </div>
+                                
+                                <!-- Step 3: Context Enrichment -->
+                                <div class="routing-step">
+                                    <div class="flex items-center mb-3">
+                                        <div class="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-search text-purple-600"></i>
+                                        </div>
+                                        <h4 class="font-semibold">Context Analysis</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Customer: Acme Financial</p>
+                                    <div class="text-xs text-gray-500">SLA: 99.9% • Critical</div>
+                                    <div class="routing-arrow"></div>
+                                </div>
+                                
+                                <!-- Step 4: Workflow Selection -->
+                                <div class="routing-step">
+                                    <div class="flex items-center mb-3">
+                                        <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-route text-green-600"></i>
+                                        </div>
+                                        <h4 class="font-semibold">Workflow Selected</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">DB Performance Response</p>
+                                    <div class="text-xs text-gray-500">Priority: High</div>
+                                    <div class="routing-arrow"></div>
+                                </div>
+                                
+                                <!-- Step 5: Execution -->
+                                <div class="routing-step">
+                                    <div class="flex items-center mb-3">
+                                        <div class="h-10 w-10 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-play text-orange-600"></i>
+                                        </div>
+                                        <h4 class="font-semibold">Workflow Started</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Agents deployed</p>
+                                    <div class="text-xs text-gray-500">ETA: 3 minutes</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Recent Incidents -->
+                        <div class="card p-6">
+                            <h3 class="text-lg font-semibold mb-4">Recent Routing Decisions</h3>
+                            <div class="space-y-4">
+                                <div class="incident-card critical card p-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-medium">Database Connection Timeout</h4>
+                                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">Critical</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Routed to: DB Performance Response</p>
+                                    <div class="flex justify-between text-xs text-gray-500">
+                                        <span>Confidence: 96%</span>
+                                        <span>2 minutes ago</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="incident-card warning card p-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-medium">High CPU Utilization</h4>
+                                        <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Warning</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Routed to: Performance Optimization</p>
+                                    <div class="flex justify-between text-xs text-gray-500">
+                                        <span>Confidence: 89%</span>
+                                        <span>5 minutes ago</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="incident-card info card p-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-medium">Backup Verification Failed</h4>
+                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Info</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Routed to: Backup Management</p>
+                                    <div class="flex justify-between text-xs text-gray-500">
+                                        <span>Confidence: 92%</span>
+                                        <span>8 minutes ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Available Workflows -->
+                        <div class="card p-6">
+                            <h3 class="text-lg font-semibold mb-4">Available Workflows</h3>
+                            <div class="space-y-3">
+                                <div class="workflow-option selected">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h4 class="font-medium">DB Performance Response</h4>
+                                            <p class="text-sm text-gray-600">Handles database performance issues</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-medium text-green-600">Active</div>
+                                            <div class="text-xs text-gray-500">Load: 3/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="workflow-option">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h4 class="font-medium">Security Incident Response</h4>
+                                            <p class="text-sm text-gray-600">Handles security threats and breaches</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-medium text-green-600">Active</div>
+                                            <div class="text-xs text-gray-500">Load: 1/5</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="workflow-option">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h4 class="font-medium">Cost Optimization</h4>
+                                            <p class="text-sm text-gray-600">Analyzes and optimizes resource costs</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-medium text-blue-600">Running</div>
+                                            <div class="text-xs text-gray-500">Load: 7/8</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="workflow-option">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h4 class="font-medium">Compliance Audit</h4>
+                                            <p class="text-sm text-gray-600">Monitors compliance violations</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-medium text-gray-500">Idle</div>
+                                            <div class="text-xs text-gray-500">Load: 0/3</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Routing Log -->
+                    <div class="card p-6 mt-8">
+                        <h3 class="text-lg font-semibold mb-4">Routing Activity Log</h3>
+                        <div class="routing-log">
+                            <div class="log-entry">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <div class="font-medium">Database timeout incident routed to DB Performance Response</div>
+                                        <div class="text-sm text-gray-600">Source: Zabbix • Customer: Acme Financial • Confidence: 96%</div>
+                                    </div>
+                                    <div class="log-timestamp">14:32:15</div>
+                                </div>
+                            </div>
+                            
+                            <div class="log-entry">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <div class="font-medium">CPU utilization alert routed to Performance Optimization</div>
+                                        <div class="text-sm text-gray-600">Source: CloudWatch • Customer: Beta Corp • Confidence: 89%</div>
+                                    </div>
+                                    <div class="log-timestamp">14:29:42</div>
+                                </div>
+                            </div>
+                            
+                            <div class="log-entry">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <div class="font-medium">Security policy violation routed to Compliance Audit</div>
+                                        <div class="text-sm text-gray-600">Source: Config Manager • Customer: Gamma Ltd • Confidence: 94%</div>
+                                    </div>
+                                    <div class="log-timestamp">14:25:18</div>
+                                </div>
+                            </div>
+                            
+                            <div class="log-entry">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <div class="font-medium">Backup failure routed to Backup Management</div>
+                                        <div class="text-sm text-gray-600">Source: Backup System • Customer: Delta Inc • Confidence: 92%</div>
+                                    </div>
+                                    <div class="log-timestamp">14:20:55</div>
+                                </div>
+                            </div>
+                            
+                            <div class="log-entry">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <div class="font-medium">Network latency spike routed to Network Diagnostics</div>
+                                        <div class="text-sm text-gray-600">Source: Network Monitor • Customer: Epsilon Co • Confidence: 87%</div>
+                                    </div>
+                                    <div class="log-timestamp">14:18:33</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Simulate real-time updates
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update metrics periodically
+            setInterval(function() {
+                const incidentCount = document.querySelector('.metric-value');
+                if (incidentCount) {
+                    const current = parseInt(incidentCount.textContent);
+                    incidentCount.textContent = current + Math.floor(Math.random() * 3);
+                }
+            }, 30000);
+
+            // Add click handlers for workflow options
+            const workflowOptions = document.querySelectorAll('.workflow-option');
+            workflowOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    workflowOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // Simulate confidence bar animation
+            const confidenceBars = document.querySelectorAll('.confidence-fill');
+            confidenceBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
+

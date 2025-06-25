@@ -1,0 +1,116 @@
+/* Sify Color Theme Variables */
+:root {
+  --sify-dark-blue: #0a3144;
+  --sify-medium-blue: #1a4d62;
+  --sify-light-blue: #2a6a80;
+  --sify-accent-green: #b4d235;
+  --sify-text-light: #ffffff;
+  --sify-text-dark: #333333;
+  --sify-border-light: #e5e7eb;
+  --sify-link-blue: #3b82f6;
+  --sify-background-light: #f8fafc;
+  --sify-card-background: #ffffff;
+  --sify-header-background: #ffffff;
+}
+
+/* Common Sify UI Elements */
+.sify-sidebar {
+  background-color: var(--sify-dark-blue);
+  color: var(--sify-text-light);
+}
+
+.sify-sidebar .nav-item {
+  color: var(--sify-text-light);
+}
+
+.sify-sidebar .nav-item:hover, .sify-sidebar .nav-item.active {
+  background-color: var(--sify-medium-blue);
+  color: var(--sify-text-light);
+}
+
+.sify-logo {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
+.sify-logo span.one {
+  color: var(--sify-text-light);
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.sify-logo span.sify {
+  color: var(--sify-accent-green);
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.sify-header {
+  background-color: var(--sify-header-background);
+  border-bottom: 1px solid var(--sify-border-light);
+}
+
+.sify-content {
+  background-color: var(--sify-background-light);
+}
+
+.sify-card {
+  background-color: var(--sify-card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.sify-button-primary {
+  background-color: var(--sify-dark-blue);
+  color: var(--sify-text-light);
+}
+
+.sify-button-primary:hover {
+  background-color: var(--sify-medium-blue);
+}
+
+.sify-button-secondary {
+  background-color: var(--sify-accent-green);
+  color: var(--sify-text-dark);
+}
+
+.sify-button-secondary:hover {
+  background-color: #a3c029;
+}
+
+.sify-tab {
+  padding: 0.75rem 1.5rem;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+}
+
+.sify-tab:hover {
+  color: var(--sify-link-blue);
+}
+
+.sify-tab.active {
+  color: var(--sify-link-blue);
+  border-bottom-color: var(--sify-link-blue);
+}
+
+.sify-breadcrumb {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+.sify-breadcrumb a {
+  color: var(--sify-text-dark);
+  text-decoration: none;
+}
+
+.sify-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.sify-breadcrumb .separator {
+  margin: 0 0.5rem;
+  color: #9ca3af;
+}
