@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sify InfiniSight - Autonomous Platform UI</title>
+  <link rel="stylesheet" href="sify-theme.css">
+  <link rel="stylesheet" href="sify-banner.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: var(--sify-background-light, #f8fafc); }
+    .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: box-shadow 0.2s; }
+    .card:hover { box-shadow: 0 8px 24px rgba(59,130,246,0.08); }
+    .sify-title { font-size: 2.5rem; font-weight: 800; color: #1e293b; }
+    .sify-subtitle { color: #64748b; font-size: 1.2rem; margin-bottom: 2rem; }
+    .link-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .link-item { display: flex; align-items: center; gap: 1rem; padding: 1.5rem; text-decoration: none; color: #1e293b; border: 2px solid #e5e7eb; border-radius: 10px; background: #fff; transition: border 0.2s, background 0.2s; }
+    .link-item:hover { border-color: #3b82f6; background: #eff6ff; }
+    .link-icon { font-size: 2rem; color: #3b82f6; }
+    @media (max-width: 600px) { .sify-title { font-size: 1.5rem; } }
+  </style>
+</head>
+<body>
+  <div class="sify-banner">
+    <div class="sify-banner-logo">
+      <span class="one">ONE</span><span class="sify">sify</span>
+      <span class="infinisight">InfiniSight</span>
+    </div>
+    <div class="sify-banner-tagline">Autonomous Insight, Always On</div>
+  </div>
+  <main class="max-w-4xl mx-auto px-4 py-10">
+    <div class="text-center mb-10">
+      <div class="sify-title">Sify InfiniSight Autonomous Platform</div>
+      <div class="sify-subtitle">Unified UI for Cloud, Network, and Security Management</div>
+    </div>
+    <div class="link-list">
+      <a class="link-item" href="incident_routing.html"><span class="link-icon">🧭</span>Incident Routing Dashboard</a>
+      <a class="link-item" href="router_agent_config.html"><span class="link-icon">⚙️</span>Router Agent Configuration</a>
+      <a class="link-item" href="operations_dashboard.html"><span class="link-icon">📊</span>Operations Dashboard</a>
+      <a class="link-item" href="workflow_builder.html"><span class="link-icon">🛠️</span>Workflow Builder</a>
+      <a class="link-item" href="workflow_tracking.html"><span class="link-icon">🔄</span>Workflow Tracking</a>
+      <a class="link-item" href="reporting_and_analytics.html"><span class="link-icon">📈</span>Reporting & Analytics</a>
+      <a class="link-item" href="tool_management.html"><span class="link-icon">🧰</span>Tool Management</a>
+      <a class="link-item" href="agent_creation.html"><span class="link-icon">🤖</span>Agent Creation</a>
+      <a class="link-item" href="agent_creation_with_tools.html"><span class="link-icon">🧩</span>Agent Creation (with Tools)</a>
+      <a class="link-item" href="agent_studio.html"><span class="link-icon">🎛️</span>Agent Studio</a>
+      <a class="link-item" href="collaboration_interface.html"><span class="link-icon">💬</span>Collaboration Interface</a>
+    </div>
+    <div class="mt-12 text-center text-gray-400 text-sm">
+      &copy; 2025 Sify InfiniSight. All rights reserved.
+    </div>
+  </main>
+</body>
+</html> 
